@@ -2,6 +2,7 @@ export type PaymentMode = 'cash' | 'upi' | 'online';
 
 export interface Service {
   id: string;
+  shop_id: string;
   name_en: string;
   name_hi: string;
   name_bn: string;
@@ -20,6 +21,7 @@ export interface ServiceSummary {
 
 export interface Transaction {
   id: string;
+  shop_id: string;
   service_id: string;
   customer_name: string | null;
   customer_charge: number;
@@ -32,6 +34,7 @@ export interface Transaction {
 
 export interface Expense {
   id: string;
+  shop_id: string;
   description: string;
   category: string;
   amount: number;

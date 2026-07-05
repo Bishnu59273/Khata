@@ -14,7 +14,8 @@
     "profit": "Profit",
     "paymentMode": "Payment",
     "time": "Time",
-    "date": "Date"
+    "date": "Date",
+    "actions": "Actions"
   },
   "empty": {
     "noTransactionsToday": "No transactions yet today — click + to add your first one"

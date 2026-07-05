@@ -1,9 +1,9 @@
 {
   "appName": "CSC आय",
   "appSub": "रोज़ का हिसाब",
-  "shopName": "राणा CSC केंद्र",
   "nav": {
     "home": "होम",
+    "transactions": "सभी लेनदेन",
     "addTransaction": "लेनदेन जोड़ें",
     "reports": "रिपोर्ट",
     "expenses": "खर्च",
@@ -18,6 +18,7 @@
     "save": "सहेजें",
     "cancel": "रद्द करें",
     "add": "जोड़ें",
+    "edit": "संपादित करें",
     "delete": "हटाएं"
   },
   "confirmDelete": "क्या आप वाकई इसे हटाना चाहते हैं?",

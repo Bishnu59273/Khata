@@ -8,6 +8,7 @@ import enTransactions from './locales/en/transactions.json';
 import enReports from './locales/en/reports.json';
 import enExpenses from './locales/en/expenses.json';
 import enServices from './locales/en/services.json';
+import enAuth from './locales/en/auth.json';
 
 import hiCommon from './locales/hi/common.json';
 import hiDashboard from './locales/hi/dashboard.json';
@@ -15,6 +16,7 @@ import hiTransactions from './locales/hi/transactions.json';
 import hiReports from './locales/hi/reports.json';
 import hiExpenses from './locales/hi/expenses.json';
 import hiServices from './locales/hi/services.json';
+import hiAuth from './locales/hi/auth.json';
 
 import bnCommon from './locales/bn/common.json';
 import bnDashboard from './locales/bn/dashboard.json';
@@ -22,6 +24,7 @@ import bnTransactions from './locales/bn/transactions.json';
 import bnReports from './locales/bn/reports.json';
 import bnExpenses from './locales/bn/expenses.json';
 import bnServices from './locales/bn/services.json';
+import bnAuth from './locales/bn/auth.json';
 
 export const defaultNS = 'common';
 
@@ -33,6 +36,7 @@ export const resources = {
     reports: enReports,
     expenses: enExpenses,
     services: enServices,
+    auth: enAuth,
   },
   hi: {
     common: hiCommon,
@@ -41,6 +45,7 @@ export const resources = {
     reports: hiReports,
     expenses: hiExpenses,
     services: hiServices,
+    auth: hiAuth,
   },
   bn: {
     common: bnCommon,
@@ -49,6 +54,7 @@ export const resources = {
     reports: bnReports,
     expenses: bnExpenses,
     services: bnServices,
+    auth: bnAuth,
   },
 } as const;
 
@@ -60,7 +66,7 @@ i18n
     supportedLngs: ['en', 'hi', 'bn'],
     fallbackLng: 'bn',
     defaultNS,
-    ns: ['common', 'dashboard', 'transactions', 'reports', 'expenses', 'services'],
+    ns: ['common', 'dashboard', 'transactions', 'reports', 'expenses', 'services', 'auth'],
     interpolation: { escapeValue: false },
     // Only an explicit prior choice overrides the Bengali default — the OS/browser
     // locale (e.g. an English-language Windows install) must not silently win.

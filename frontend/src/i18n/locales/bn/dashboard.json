@@ -14,7 +14,8 @@
     "profit": "লাভ",
     "paymentMode": "পেমেন্ট",
     "time": "সময়",
-    "date": "তারিখ"
+    "date": "তারিখ",
+    "actions": "কার্যক্রম"
   },
   "empty": {
     "noTransactionsToday": "আজ এখনও কোনো লেনদেন নেই — প্রথমটি যোগ করতে + চাপুন"

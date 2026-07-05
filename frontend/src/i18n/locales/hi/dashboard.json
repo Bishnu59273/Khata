@@ -14,7 +14,8 @@
     "profit": "लाभ",
     "paymentMode": "भुगतान",
     "time": "समय",
-    "date": "तारीख"
+    "date": "तारीख",
+    "actions": "कार्रवाई"
   },
   "empty": {
     "noTransactionsToday": "आज अभी तक कोई लेनदेन नहीं — पहला जोड़ने के लिए + दबाएँ"

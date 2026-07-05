@@ -1,26 +1,23 @@
-import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Plus } from 'lucide-react';
 import { getTodayTransactions } from '../api/transactions';
 import { aggregateTransactions } from '../utils/aggregateTransactions';
 import { ProfitHighlight } from '../components/dashboard/ProfitHighlight';
 import { StatCard } from '../components/dashboard/StatCard';
 import { TransactionsTable } from '../components/transactions/TransactionsTable';
-import { EditTransactionModal } from '../components/transactions/EditTransactionModal';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
-import type { Transaction } from '../types/models';
 
 export function DashboardPage() {
   const { t } = useTranslation('dashboard');
+  const navigate = useNavigate();
   const { data, status, error } = useQuery({
     queryKey: ['transactions', 'today'],
     queryFn: getTodayTransactions,
   });
-  const [editingTx, setEditingTx] = useState<Transaction | null>(null);
 
   const aggregates = aggregateTransactions(data ?? []);
 
@@ -63,14 +60,10 @@ export function DashboardPage() {
                 action={{ label: t('addTransactionCta'), to: '/transactions/new' }}
               />
             ) : (
-              <TransactionsTable transactions={data} onRowClick={setEditingTx} />
+              <TransactionsTable transactions={data} onRowClick={() => navigate('/transactions')} />
             )}
           </div>
         </>
-      )}
-
-      {editingTx && (
-        <EditTransactionModal transaction={editingTx} onClose={() => setEditingTx(null)} />
       )}
     </div>
   );

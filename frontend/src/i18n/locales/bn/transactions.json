@@ -1,5 +1,9 @@
 {
   "title": "লেনদেন যোগ করুন",
+  "listTitle": "সব লেনদেন",
+  "empty": "এখনও কোনো লেনদেন নেই।",
+  "deleteTransaction": "লেনদেন মুছুন",
+  "deleteConfirmMessage": "{{service}}-এর ₹{{amount}} এন্ট্রিটি মুছবেন? এটি পূর্বাবস্থায় ফেরানো যাবে না।",
   "selectService": "একটি সেবা বেছে নিন",
   "entryDetails": "এন্ট্রির বিবরণ",
   "selectPrompt": "শুরু করতে একটি সেবা নির্বাচন করুন",

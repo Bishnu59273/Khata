@@ -10,11 +10,12 @@ import type { Transaction } from '../types/models.js';
 
 const SELECT_WITH_SERVICE = '*, service:services(id,name_en,name_hi,name_bn)';
 
-export async function listTodayTransactions(): Promise<Transaction[]> {
+export async function listTodayTransactions(shopId: string): Promise<Transaction[]> {
   const { fromISO, toISO } = getTodayRangeUTC();
   const { data, error } = await supabase
     .from('transactions')
     .select(SELECT_WITH_SERVICE)
+    .eq('shop_id', shopId)
     .gte('created_at', fromISO)
     .lt('created_at', toISO)
     .order('created_at', { ascending: false });
@@ -22,11 +23,15 @@ export async function listTodayTransactions(): Promise<Transaction[]> {
   return data as unknown as Transaction[];
 }
 
-export async function listTransactions(filters: ListTransactionsQuery): Promise<Transaction[]> {
+export async function listTransactions(
+  shopId: string,
+  filters: ListTransactionsQuery
+): Promise<Transaction[]> {
   const { fromISO, toISO } = resolveDateRangeQuery(filters.from, filters.to);
   let query = supabase
     .from('transactions')
     .select(SELECT_WITH_SERVICE)
+    .eq('shop_id', shopId)
     .order('created_at', { ascending: false });
 
   if (fromISO) query = query.gte('created_at', fromISO);
@@ -39,20 +44,27 @@ export async function listTransactions(filters: ListTransactionsQuery): Promise<
   return data as unknown as Transaction[];
 }
 
-export async function getTransactionById(id: string): Promise<Transaction | null> {
+export async function getTransactionById(
+  shopId: string,
+  id: string
+): Promise<Transaction | null> {
   const { data, error } = await supabase
     .from('transactions')
     .select(SELECT_WITH_SERVICE)
     .eq('id', id)
+    .eq('shop_id', shopId)
     .maybeSingle();
   if (error) throw new AppError(500, error.message);
   return data as unknown as Transaction | null;
 }
 
-export async function createTransaction(input: CreateTransactionInput): Promise<Transaction> {
+export async function createTransaction(
+  shopId: string,
+  input: CreateTransactionInput
+): Promise<Transaction> {
   const { data, error } = await supabase
     .from('transactions')
-    .insert(input)
+    .insert({ ...input, shop_id: shopId })
     .select(SELECT_WITH_SERVICE)
     .single();
   if (error) throw new AppError(500, error.message);
@@ -60,20 +72,26 @@ export async function createTransaction(input: CreateTransactionInput): Promise<
 }
 
 export async function updateTransaction(
+  shopId: string,
   id: string,
   input: UpdateTransactionInput
-): Promise<Transaction> {
+): Promise<Transaction | null> {
   const { data, error } = await supabase
     .from('transactions')
     .update(input)
     .eq('id', id)
+    .eq('shop_id', shopId)
     .select(SELECT_WITH_SERVICE)
-    .single();
+    .maybeSingle();
   if (error) throw new AppError(500, error.message);
-  return data as unknown as Transaction;
+  return data as unknown as Transaction | null;
 }
 
-export async function deleteTransaction(id: string): Promise<void> {
-  const { error } = await supabase.from('transactions').delete().eq('id', id);
+export async function deleteTransaction(shopId: string, id: string): Promise<void> {
+  const { error } = await supabase
+    .from('transactions')
+    .delete()
+    .eq('id', id)
+    .eq('shop_id', shopId);
   if (error) throw new AppError(500, error.message);
 }

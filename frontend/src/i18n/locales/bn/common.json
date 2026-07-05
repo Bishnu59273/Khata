@@ -1,9 +1,9 @@
 {
   "appName": "CSC আয়",
   "appSub": "দৈনিক হিসাব",
-  "shopName": "রানা CSC কেন্দ্র",
   "nav": {
     "home": "হোম",
+    "transactions": "সব লেনদেন",
     "addTransaction": "লেনদেন যোগ করুন",
     "reports": "রিপোর্ট",
     "expenses": "খরচ",
@@ -18,6 +18,7 @@
     "save": "সংরক্ষণ করুন",
     "cancel": "বাতিল করুন",
     "add": "যোগ করুন",
+    "edit": "সম্পাদনা করুন",
     "delete": "মুছুন"
   },
   "confirmDelete": "আপনি কি নিশ্চিত যে এটি মুছতে চান?",

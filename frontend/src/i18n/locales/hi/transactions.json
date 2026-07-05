@@ -1,5 +1,9 @@
 {
   "title": "लेनदेन जोड़ें",
+  "listTitle": "सभी लेनदेन",
+  "empty": "अभी तक कोई लेनदेन नहीं है।",
+  "deleteTransaction": "लेनदेन हटाएं",
+  "deleteConfirmMessage": "{{service}} की ₹{{amount}} वाली प्रविष्टि हटाएं? इसे वापस नहीं लाया जा सकता।",
   "selectService": "सेवा चुनें",
   "entryDetails": "प्रविष्टि विवरण",
   "selectPrompt": "शुरू करने के लिए एक सेवा चुनें",

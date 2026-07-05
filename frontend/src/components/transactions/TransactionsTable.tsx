@@ -1,3 +1,4 @@
+import { Pencil, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Transaction } from '../../types/models';
 import { paymentModePillStyle } from '../../utils/paymentMode';
@@ -26,12 +27,17 @@ export function TransactionsTable({
   transactions,
   showDate = false,
   onRowClick,
+  onEdit,
+  onDelete,
 }: {
   transactions: Transaction[];
   showDate?: boolean;
   onRowClick?: (transaction: Transaction) => void;
+  onEdit?: (transaction: Transaction) => void;
+  onDelete?: (transaction: Transaction) => void;
 }) {
   const { t, i18n } = useTranslation('dashboard');
+  const showActions = !!onEdit || !!onDelete;
 
   return (
     <div className="overflow-x-auto rounded-2xl border border-border-soft bg-surface">
@@ -46,6 +52,9 @@ export function TransactionsTable({
             <th className="px-5 py-3 text-right font-semibold text-ink-700">
               {showDate ? t('table.date') : t('table.time')}
             </th>
+            {showActions && (
+              <th className="px-5 py-3 text-right font-semibold text-ink-700">{t('table.actions')}</th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -70,6 +79,38 @@ export function TransactionsTable({
               <td className="px-5 py-3 text-right text-ink-600">
                 {showDate ? formatDate(tx.created_at, i18n.language) : formatTime(tx.created_at)}
               </td>
+              {showActions && (
+                <td className="px-5 py-3">
+                  <div className="flex items-center justify-end gap-2">
+                    {onEdit && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEdit(tx);
+                        }}
+                        aria-label={t('actions.edit', { ns: 'common' })}
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-ink-700 hover:bg-brand-50"
+                      >
+                        <Pencil size={16} />
+                      </button>
+                    )}
+                    {onDelete && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDelete(tx);
+                        }}
+                        aria-label={t('actions.delete', { ns: 'common' })}
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-danger-600 hover:bg-danger-600/[8%]"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </div>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

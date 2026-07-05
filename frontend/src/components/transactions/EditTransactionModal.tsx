@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Modal } from '../common/Modal';
 import { PaymentModeToggle } from './PaymentModeToggle';
 import { getAllServices } from '../../api/services';
-import { updateTransaction, deleteTransaction } from '../../api/transactions';
+import { updateTransaction } from '../../api/transactions';
 import type { PaymentMode, Service, Transaction } from '../../types/models';
 
 function serviceName(service: Service, lang: string): string {
@@ -30,8 +30,6 @@ export function EditTransactionModal({
   const [cost, setCost] = useState(String(transaction.cost_paid));
   const [mode, setMode] = useState<PaymentMode>(transaction.payment_mode);
 
-  const invalidate = () => queryClient.invalidateQueries({ queryKey: ['transactions'] });
-
   const saveMutation = useMutation({
     mutationFn: () =>
       updateTransaction(transaction.id, {
@@ -41,24 +39,10 @@ export function EditTransactionModal({
         payment_mode: mode,
       }),
     onSuccess: () => {
-      invalidate();
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
       onClose();
     },
   });
-
-  const deleteMutation = useMutation({
-    mutationFn: () => deleteTransaction(transaction.id),
-    onSuccess: () => {
-      invalidate();
-      onClose();
-    },
-  });
-
-  function handleDelete() {
-    if (window.confirm(t('confirmDelete', { ns: 'common' }))) {
-      deleteMutation.mutate();
-    }
-  }
 
   const liveProfit = Number(charge || 0) - Number(cost || 0);
 
@@ -111,24 +95,14 @@ export function EditTransactionModal({
         <PaymentModeToggle value={mode} onChange={setMode} />
       </div>
 
-      <div className="flex gap-3">
-        <button
-          type="button"
-          onClick={handleDelete}
-          disabled={deleteMutation.isPending}
-          className="rounded-xl border-2 border-danger-600 px-5 py-3 text-base font-bold text-danger-600 transition-colors hover:bg-danger-600/[8%]"
-        >
-          {t('actions.delete', { ns: 'common' })}
-        </button>
-        <button
-          type="button"
-          onClick={() => saveMutation.mutate()}
-          disabled={saveMutation.isPending}
-          className="flex-1 rounded-xl bg-brand-500 px-5 py-3 text-base font-bold text-white transition-colors hover:bg-brand-600"
-        >
-          {t('actions.save', { ns: 'common' })}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => saveMutation.mutate()}
+        disabled={saveMutation.isPending}
+        className="w-full rounded-xl bg-brand-500 px-5 py-3 text-base font-bold text-white transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {t('actions.save', { ns: 'common' })}
+      </button>
     </Modal>
   );
 }

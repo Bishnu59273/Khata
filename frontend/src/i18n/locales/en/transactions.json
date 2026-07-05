@@ -1,5 +1,9 @@
 {
   "title": "Add Transaction",
+  "listTitle": "All Transactions",
+  "empty": "No transactions yet.",
+  "deleteTransaction": "Delete transaction",
+  "deleteConfirmMessage": "Delete the {{service}} entry for ₹{{amount}}? This can't be undone.",
   "selectService": "Pick a service",
   "entryDetails": "Entry Details",
   "selectPrompt": "Select a service to begin",

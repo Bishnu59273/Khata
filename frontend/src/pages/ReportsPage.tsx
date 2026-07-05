@@ -8,6 +8,7 @@ import type { ReportRangePreset } from '../utils/dateRanges';
 import { StatCard } from '../components/dashboard/StatCard';
 import { TransactionsTable } from '../components/transactions/TransactionsTable';
 import { EditTransactionModal } from '../components/transactions/EditTransactionModal';
+import { DeleteTransactionModal } from '../components/transactions/DeleteTransactionModal';
 import { ProfitTrendChart } from '../components/reports/ProfitTrendChart';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
@@ -22,6 +23,7 @@ export function ReportsPage() {
   const [customFrom, setCustomFrom] = useState(getTodayDateStr());
   const [customTo, setCustomTo] = useState(getTodayDateStr());
   const [editingTx, setEditingTx] = useState<Transaction | null>(null);
+  const [deletingTx, setDeletingTx] = useState<Transaction | null>(null);
 
   const range = preset === 'custom' ? { from: customFrom, to: customTo } : getPresetRange(preset);
 
@@ -108,7 +110,12 @@ export function ReportsPage() {
             {data.length === 0 ? (
               <EmptyState message={t('empty')} />
             ) : (
-              <TransactionsTable transactions={data} showDate onRowClick={setEditingTx} />
+              <TransactionsTable
+                transactions={data}
+                showDate
+                onEdit={setEditingTx}
+                onDelete={setDeletingTx}
+              />
             )}
           </div>
         </>
@@ -116,6 +123,10 @@ export function ReportsPage() {
 
       {editingTx && (
         <EditTransactionModal transaction={editingTx} onClose={() => setEditingTx(null)} />
+      )}
+
+      {deletingTx && (
+        <DeleteTransactionModal transaction={deletingTx} onClose={() => setDeletingTx(null)} />
       )}
     </div>
   );
