@@ -1,11 +1,24 @@
 {
-  "title": "Expenses",
-  "addExpense": "+ Add Expense",
+  "title": "दुकान का खर्च",
+  "addExpense": "खर्च जोड़ें",
+  "editExpense": "खर्च संपादित करें",
+  "totalThisMonth": "इस महीने कुल",
   "table": {
-    "description": "Description",
-    "category": "Category",
-    "amount": "Amount",
-    "date": "Date"
+    "description": "विवरण",
+    "category": "श्रेणी",
+    "amount": "राशि",
+    "date": "तारीख"
   },
-  "comingSoon": "This page is coming soon."
+  "categories": {
+    "fixed": "निश्चित",
+    "utility": "उपयोगिता",
+    "supplies": "सामग्री",
+    "other": "अन्य"
+  },
+  "form": {
+    "description": "विवरण",
+    "category": "श्रेणी",
+    "amount": "राशि"
+  },
+  "empty": "अभी तक कोई खर्च दर्ज नहीं हुआ।"
 }

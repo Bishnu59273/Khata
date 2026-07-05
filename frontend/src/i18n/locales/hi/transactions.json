@@ -1,13 +1,16 @@
 {
-  "title": "Add Transaction",
-  "selectService": "Select a service",
-  "customerName": "Customer Name",
-  "customerCharge": "Customer Charge",
-  "costPaid": "Cost Paid",
+  "title": "लेनदेन जोड़ें",
+  "selectService": "सेवा चुनें",
+  "entryDetails": "प्रविष्टि विवरण",
+  "selectPrompt": "शुरू करने के लिए एक सेवा चुनें",
+  "customerCharge": "ग्राहक शुल्क",
+  "costPaid": "पोर्टल लागत",
+  "paymentModeLabel": "भुगतान का तरीका",
+  "save": "लेनदेन सहेजें",
+  "profitShort": "लाभ",
   "paymentMode": {
-    "cash": "Cash",
-    "upi": "UPI",
-    "online": "Online"
-  },
-  "comingSoon": "This page is coming soon."
+    "cash": "नगद",
+    "upi": "यूपीआई",
+    "online": "ऑनलाइन"
+  }
 }

@@ -1,10 +1,14 @@
 {
-  "title": "Reports",
+  "title": "Reports & History",
   "range": {
     "today": "Today",
     "week": "This Week",
     "month": "This Month",
     "custom": "Custom"
   },
-  "comingSoon": "This page is coming soon."
+  "customFrom": "From",
+  "customTo": "To",
+  "trend": "Profit Trend (last 7 days)",
+  "detail": "Transaction Details",
+  "empty": "No transactions in this period."
 }

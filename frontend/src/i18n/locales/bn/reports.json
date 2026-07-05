@@ -1,10 +1,14 @@
 {
-  "title": "Reports",
+  "title": "রিপোর্ট ও ইতিহাস",
   "range": {
-    "today": "Today",
-    "week": "This Week",
-    "month": "This Month",
-    "custom": "Custom"
+    "today": "আজ",
+    "week": "এই সপ্তাহ",
+    "month": "এই মাস",
+    "custom": "কাস্টম"
   },
-  "comingSoon": "This page is coming soon."
+  "customFrom": "থেকে",
+  "customTo": "পর্যন্ত",
+  "trend": "লাভের ধারা (গত ৭ দিন)",
+  "detail": "লেনদেনের বিবরণ",
+  "empty": "এই সময়ের মধ্যে কোনো লেনদেন নেই।"
 }

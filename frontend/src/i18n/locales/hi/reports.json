@@ -1,10 +1,14 @@
 {
-  "title": "Reports",
+  "title": "रिपोर्ट और इतिहास",
   "range": {
-    "today": "Today",
-    "week": "This Week",
-    "month": "This Month",
-    "custom": "Custom"
+    "today": "आज",
+    "week": "इस सप्ताह",
+    "month": "इस महीने",
+    "custom": "कस्टम"
   },
-  "comingSoon": "This page is coming soon."
+  "customFrom": "से",
+  "customTo": "तक",
+  "trend": "लाभ रुझान (पिछले 7 दिन)",
+  "detail": "लेनदेन विवरण",
+  "empty": "इस अवधि में कोई लेनदेन नहीं।"
 }

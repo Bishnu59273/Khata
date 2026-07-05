@@ -1,11 +1,24 @@
 {
-  "title": "Expenses",
-  "addExpense": "+ Add Expense",
+  "title": "দোকানের খরচ",
+  "addExpense": "খরচ যোগ করুন",
+  "editExpense": "খরচ সম্পাদনা করুন",
+  "totalThisMonth": "এই মাসে মোট",
   "table": {
-    "description": "Description",
-    "category": "Category",
-    "amount": "Amount",
-    "date": "Date"
+    "description": "বিবরণ",
+    "category": "বিভাগ",
+    "amount": "পরিমাণ",
+    "date": "তারিখ"
   },
-  "comingSoon": "This page is coming soon."
+  "categories": {
+    "fixed": "নির্দিষ্ট",
+    "utility": "পরিষেবা",
+    "supplies": "সরঞ্জাম",
+    "other": "অন্যান্য"
+  },
+  "form": {
+    "description": "বিবরণ",
+    "category": "বিভাগ",
+    "amount": "পরিমাণ"
+  },
+  "empty": "এখনও কোনো খরচ যোগ করা হয়নি।"
 }

@@ -1,10 +1,13 @@
 {
-  "appName": "Khata",
+  "appName": "CSC Income",
+  "appSub": "Daily ledger",
+  "shopName": "Rana CSC Centre",
   "nav": {
     "home": "Home",
     "addTransaction": "Add Transaction",
     "reports": "Reports",
-    "expenses": "Expenses"
+    "expenses": "Expenses",
+    "services": "Services"
   },
   "language": {
     "en": "English",
@@ -14,8 +17,10 @@
   "actions": {
     "save": "Save",
     "cancel": "Cancel",
-    "add": "Add"
+    "add": "Add",
+    "delete": "Delete"
   },
+  "confirmDelete": "Are you sure you want to delete this?",
   "state": {
     "loading": "Loading...",
     "error": "Something went wrong. Please try again."

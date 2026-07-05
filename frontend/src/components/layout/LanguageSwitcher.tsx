@@ -1,25 +1,25 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
-const LANGUAGES: { code: 'en' | 'hi' | 'bn'; label: string }[] = [
-  { code: 'en', label: 'EN' },
-  { code: 'hi', label: 'हिं' },
-  { code: 'bn', label: 'বাং' },
+const LANGUAGES: { code: "en" | "hi" | "bn"; label: string }[] = [
+  { code: "en", label: "ENG" },
+  { code: "hi", label: "हिंदी" },
+  { code: "bn", label: "বাংলা" },
 ];
 
 export function LanguageSwitcher() {
   const { i18n } = useTranslation();
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-1 rounded-xl border border-border bg-brand-50 p-1">
       {LANGUAGES.map(({ code, label }) => (
         <button
           key={code}
           type="button"
           onClick={() => i18n.changeLanguage(code)}
-          className={`min-h-12 flex-1 rounded-xl text-lg font-semibold transition-colors ${
+          className={`min-w-12 rounded-lg px-3 py-1.5 text-base font-bold transition-colors ${
             i18n.language === code
-              ? 'bg-brand-500 text-white'
-              : 'bg-brand-50 text-ink-900 hover:bg-brand-100'
+              ? "bg-surface text-brand-600 shadow-sm"
+              : "text-ink-600 hover:text-ink-900"
           }`}
         >
           {label}

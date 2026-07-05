@@ -1,21 +1,22 @@
 {
-  "title": "Dashboard",
-  "todayProfit": "Today's Profit",
-  "totalCollected": "Total Collected",
-  "totalCost": "Total Cost",
-  "transactionCount": "Transactions",
-  "todaysTransactions": "Today's Transactions",
-  "addTransactionCta": "+ Add Transaction",
+  "title": "आज की झलक",
+  "todayProfit": "आज का लाभ",
+  "profitSub": "पोर्टल लागत के बाद आपकी कमाई",
+  "totalCollected": "कुल वसूली",
+  "totalCost": "कुल लागत",
+  "transactionCount": "लेनदेन संख्या",
+  "todaysTransactions": "आज के लेनदेन",
+  "addTransactionCta": "लेनदेन जोड़ें",
   "table": {
-    "customer": "Customer",
-    "service": "Service",
-    "charge": "Charge",
-    "cost": "Cost",
-    "profit": "Profit",
-    "paymentMode": "Payment Mode",
-    "time": "Time"
+    "service": "सेवा",
+    "charge": "शुल्क",
+    "cost": "लागत",
+    "profit": "लाभ",
+    "paymentMode": "भुगतान",
+    "time": "समय",
+    "date": "तारीख"
   },
   "empty": {
-    "noTransactionsToday": "No transactions yet today."
+    "noTransactionsToday": "आज अभी तक कोई लेनदेन नहीं — पहला जोड़ने के लिए + दबाएँ"
   }
 }

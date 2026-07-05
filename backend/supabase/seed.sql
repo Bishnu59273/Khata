@@ -1,9 +1,11 @@
--- Sample CSC services for local development/testing.
--- name_hi/name_bn are placeholders (same as name_en) until real translations are filled in.
+-- Sample CSC services, matching the shop's actual offerings.
+-- Charge/cost values are starting defaults; adjust per real portal fees.
 
 insert into services (name_en, name_hi, name_bn, default_charge, default_cost) values
-  ('Aadhaar Update', 'Aadhaar Update', 'Aadhaar Update', 100, 50),
-  ('PAN Card Application', 'PAN Card Application', 'PAN Card Application', 150, 107),
-  ('Passport Application', 'Passport Application', 'Passport Application', 300, 200),
-  ('Printout', 'Printout', 'Printout', 10, 3),
-  ('Photocopy', 'Photocopy', 'Photocopy', 5, 1);
+  ('Aadhar Update', 'आधार अपडेट', 'আধার আপডেট', 50, 20),
+  ('PAN Card', 'पैन कार्ड', 'প্যান কার্ড', 150, 107),
+  ('Money Transfer', 'पैसा ट्रांसफर', 'টাকা ট্রান্সফার', 30, 5),
+  ('Bill Payment', 'बिल भुगतान', 'বিল পেমেন্ট', 20, 0),
+  ('Printing', 'प्रिंटिंग', 'প্রিন্টিং', 10, 2),
+  ('Exam Form', 'परीक्षा फॉर्म', 'পরীক্ষার ফর্ম', 100, 60),
+  ('Passport', 'पासपोर्ट', 'পাসপোর্ট', 200, 150);

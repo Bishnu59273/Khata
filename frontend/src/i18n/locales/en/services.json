@@ -1,0 +1,16 @@
+{
+  "title": "Services",
+  "addService": "Add Service",
+  "editService": "Edit Service",
+  "nameEn": "Name (English)",
+  "nameHi": "Name (Hindi)",
+  "nameBn": "Name (Bengali)",
+  "defaultCharge": "Default Charge",
+  "defaultCost": "Default Cost",
+  "status": "Status",
+  "active": "Active",
+  "inactive": "Inactive",
+  "deactivate": "Deactivate",
+  "reactivate": "Reactivate",
+  "empty": "No services yet."
+}

@@ -1,13 +1,16 @@
 {
   "title": "Add Transaction",
-  "selectService": "Select a service",
-  "customerName": "Customer Name",
+  "selectService": "Pick a service",
+  "entryDetails": "Entry Details",
+  "selectPrompt": "Select a service to begin",
   "customerCharge": "Customer Charge",
-  "costPaid": "Cost Paid",
+  "costPaid": "Portal Cost",
+  "paymentModeLabel": "Payment Mode",
+  "save": "Save Transaction",
+  "profitShort": "profit",
   "paymentMode": {
     "cash": "Cash",
     "upi": "UPI",
     "online": "Online"
-  },
-  "comingSoon": "This page is coming soon."
+  }
 }

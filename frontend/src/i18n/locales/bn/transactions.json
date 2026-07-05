@@ -1,13 +1,16 @@
 {
-  "title": "Add Transaction",
-  "selectService": "Select a service",
-  "customerName": "Customer Name",
-  "customerCharge": "Customer Charge",
-  "costPaid": "Cost Paid",
+  "title": "লেনদেন যোগ করুন",
+  "selectService": "একটি সেবা বেছে নিন",
+  "entryDetails": "এন্ট্রির বিবরণ",
+  "selectPrompt": "শুরু করতে একটি সেবা নির্বাচন করুন",
+  "customerCharge": "গ্রাহক চার্জ",
+  "costPaid": "পোর্টাল খরচ",
+  "paymentModeLabel": "পেমেন্ট মোড",
+  "save": "লেনদেন সংরক্ষণ করুন",
+  "profitShort": "লাভ",
   "paymentMode": {
-    "cash": "Cash",
-    "upi": "UPI",
-    "online": "Online"
-  },
-  "comingSoon": "This page is coming soon."
+    "cash": "নগদ",
+    "upi": "ইউপিআই",
+    "online": "অনলাইন"
+  }
 }

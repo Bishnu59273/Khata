@@ -1,21 +1,22 @@
 {
-  "title": "Dashboard",
+  "title": "Today at a glance",
   "todayProfit": "Today's Profit",
+  "profitSub": "Your earning after portal costs",
   "totalCollected": "Total Collected",
   "totalCost": "Total Cost",
   "transactionCount": "Transactions",
   "todaysTransactions": "Today's Transactions",
-  "addTransactionCta": "+ Add Transaction",
+  "addTransactionCta": "Add Transaction",
   "table": {
-    "customer": "Customer",
     "service": "Service",
     "charge": "Charge",
     "cost": "Cost",
     "profit": "Profit",
-    "paymentMode": "Payment Mode",
-    "time": "Time"
+    "paymentMode": "Payment",
+    "time": "Time",
+    "date": "Date"
   },
   "empty": {
-    "noTransactionsToday": "No transactions yet today."
+    "noTransactionsToday": "No transactions yet today — click + to add your first one"
   }
 }

@@ -1,17 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: #fffbf5;
-  --color-surface: #ffffff;
-  --color-brand-50: #fff7ed;
-  --color-brand-100: #ffedd5;
-  --color-brand-300: #fdba74;
-  --color-brand-500: #f97316;
-  --color-brand-600: #ea580c;
-  --color-brand-700: #c2410c;
-  --color-ink-900: #2b1b12;
-  --color-ink-600: #6b5b4d;
-  --color-success-600: #15803d;
+  --color-cream: #f4efe6;
+  --color-sidebar: #fbf7f0;
+  --color-surface: #fffdfa;
+  --color-tablehead: #f6efe3;
+  --color-border: #e8ded0;
+  --color-border-soft: #ece3d5;
+  --color-border-row: #f0e8db;
+
+  --color-brand-50: #f4ede1;
+  --color-brand-500: #c26a3d;
+  --color-brand-600: #ab5a32;
+
+  --color-ink-900: #2b2620;
+  --color-ink-700: #7d7264;
+  --color-ink-600: #9a8f7e;
+
+  --color-success-600: #2f6b47;
+  --color-success-bg: #eef5f0;
+  --color-success-border: #cfe2d5;
+  --color-cost-600: #b06a4a;
   --color-danger-600: #dc2626;
 
   --font-sans: "Noto Sans", "Noto Sans Devanagari", "Noto Sans Bengali", ui-sans-serif,
@@ -22,7 +31,7 @@
   --text-lg: 1.375rem;
   --text-xl: 1.75rem;
   --text-2xl: 2.25rem;
-  --text-display: 4.5rem;
+  --text-display: 3.5rem;
 }
 
 body {

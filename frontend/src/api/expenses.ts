@@ -22,6 +22,13 @@ export function createExpense(input: CreateExpenseInput): Promise<Expense> {
   });
 }
 
+export function updateExpense(id: string, input: Partial<CreateExpenseInput>): Promise<Expense> {
+  return apiFetch<Expense>(`/expenses/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(input),
+  });
+}
+
 export function deleteExpense(id: string): Promise<void> {
   return apiFetch<void>(`/expenses/${id}`, { method: 'DELETE' });
 }

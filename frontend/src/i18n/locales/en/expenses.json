@@ -1,11 +1,24 @@
 {
-  "title": "Expenses",
-  "addExpense": "+ Add Expense",
+  "title": "Shop Expenses",
+  "addExpense": "Add Expense",
+  "editExpense": "Edit Expense",
+  "totalThisMonth": "Total this month",
   "table": {
     "description": "Description",
     "category": "Category",
     "amount": "Amount",
     "date": "Date"
   },
-  "comingSoon": "This page is coming soon."
+  "categories": {
+    "fixed": "Fixed",
+    "utility": "Utility",
+    "supplies": "Supplies",
+    "other": "Other"
+  },
+  "form": {
+    "description": "Description",
+    "category": "Category",
+    "amount": "Amount"
+  },
+  "empty": "No expenses recorded yet."
 }

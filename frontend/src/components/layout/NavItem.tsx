@@ -14,8 +14,8 @@ export function NavItem({ to, label, icon: Icon, end }: NavItemProps) {
       to={to}
       end={end}
       className={({ isActive }) =>
-        `flex items-center gap-3 rounded-xl px-4 py-3 text-lg font-semibold transition-colors ${
-          isActive ? 'bg-brand-500 text-white' : 'text-ink-900 hover:bg-brand-50'
+        `flex items-center gap-3 rounded-xl px-3.5 py-3 text-base font-semibold transition-colors ${
+          isActive ? 'bg-brand-500/[12%] text-brand-600' : 'text-ink-900 hover:bg-brand-50'
         }`
       }
     >
