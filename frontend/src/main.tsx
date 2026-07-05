@@ -6,6 +6,10 @@ import { RouterProvider } from 'react-router';
 import { ApiError } from './api/client';
 import { AUTH_QUERY_KEY, AuthProvider } from './context/AuthContext';
 
+import '@fontsource/outfit/400.css';
+import '@fontsource/outfit/500.css';
+import '@fontsource/outfit/600.css';
+import '@fontsource/outfit/700.css';
 import '@fontsource/noto-sans/400.css';
 import '@fontsource/noto-sans/500.css';
 import '@fontsource/noto-sans/600.css';

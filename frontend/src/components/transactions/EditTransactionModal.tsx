@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Modal } from '../common/Modal';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Button } from '../ui/button';
 import { PaymentModeToggle } from './PaymentModeToggle';
 import { getAllServices } from '../../api/services';
 import { updateTransaction } from '../../api/transactions';
@@ -47,62 +48,67 @@ export function EditTransactionModal({
   const liveProfit = Number(charge || 0) - Number(cost || 0);
 
   return (
-    <Modal onClose={onClose}>
-      <h2 className="mb-4 text-lg font-bold text-ink-900">{t('entryDetails')}</h2>
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('entryDetails')}</DialogTitle>
+        </DialogHeader>
 
-      <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('selectService')}</label>
-      <select
-        value={serviceId}
-        onChange={(e) => setServiceId(e.target.value)}
-        className="mb-4 w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
-      >
-        {(services ?? []).map((service) => (
-          <option key={service.id} value={service.id}>
-            {serviceName(service, i18n.language)}
-          </option>
-        ))}
-      </select>
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('selectService')}</label>
+        <select
+          value={serviceId}
+          onChange={(e) => setServiceId(e.target.value)}
+          className="mb-4 w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
+        >
+          {(services ?? []).map((service) => (
+            <option key={service.id} value={service.id}>
+              {serviceName(service, i18n.language)}
+            </option>
+          ))}
+        </select>
 
-      <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('customerCharge')}</label>
-      <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
-        <span className="text-lg font-bold text-ink-600">₹</span>
-        <input
-          type="number"
-          value={charge}
-          onChange={(e) => setCharge(e.target.value)}
-          className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
-        />
-      </div>
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('customerCharge')}</label>
+        <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
+          <span className="text-lg font-bold text-ink-600">₹</span>
+          <input
+            type="number"
+            value={charge}
+            onChange={(e) => setCharge(e.target.value)}
+            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
+          />
+        </div>
 
-      <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('costPaid')}</label>
-      <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
-        <span className="text-lg font-bold text-ink-600">₹</span>
-        <input
-          type="number"
-          value={cost}
-          onChange={(e) => setCost(e.target.value)}
-          className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
-        />
-      </div>
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('costPaid')}</label>
+        <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
+          <span className="text-lg font-bold text-ink-600">₹</span>
+          <input
+            type="number"
+            value={cost}
+            onChange={(e) => setCost(e.target.value)}
+            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
+          />
+        </div>
 
-      <div className="mb-4 flex items-center justify-between rounded-xl border border-success-border bg-success-bg px-4 py-3">
-        <span className="text-sm font-semibold text-[#4d7a5e]">{t('table.profit', { ns: 'dashboard' })}</span>
-        <span className="text-2xl font-bold text-success-600">₹{liveProfit.toFixed(2)}</span>
-      </div>
+        <div className="mb-4 flex items-center justify-between rounded-xl border border-success-border bg-success-bg px-4 py-3">
+          <span className="text-sm font-semibold text-[#4d7a5e]">{t('table.profit', { ns: 'dashboard' })}</span>
+          <span className="text-2xl font-bold text-success-600">₹{liveProfit.toFixed(2)}</span>
+        </div>
 
-      <label className="mb-2 block text-sm font-semibold text-ink-700">{t('paymentModeLabel')}</label>
-      <div className="mb-5">
-        <PaymentModeToggle value={mode} onChange={setMode} />
-      </div>
+        <label className="mb-2 block text-sm font-semibold text-ink-700">{t('paymentModeLabel')}</label>
+        <div className="mb-5">
+          <PaymentModeToggle value={mode} onChange={setMode} />
+        </div>
 
-      <button
-        type="button"
-        onClick={() => saveMutation.mutate()}
-        disabled={saveMutation.isPending}
-        className="w-full rounded-xl bg-brand-500 px-5 py-3 text-base font-bold text-white transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {t('actions.save', { ns: 'common' })}
-      </button>
-    </Modal>
+        <Button
+          type="button"
+          size="lg"
+          className="w-full"
+          onClick={() => saveMutation.mutate()}
+          disabled={saveMutation.isPending}
+        >
+          {t('actions.save', { ns: 'common' })}
+        </Button>
+      </DialogContent>
+    </Dialog>
   );
 }
