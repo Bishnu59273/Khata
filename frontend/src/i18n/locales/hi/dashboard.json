@@ -1,0 +1,21 @@
+{
+  "title": "Dashboard",
+  "todayProfit": "Today's Profit",
+  "totalCollected": "Total Collected",
+  "totalCost": "Total Cost",
+  "transactionCount": "Transactions",
+  "todaysTransactions": "Today's Transactions",
+  "addTransactionCta": "+ Add Transaction",
+  "table": {
+    "customer": "Customer",
+    "service": "Service",
+    "charge": "Charge",
+    "cost": "Cost",
+    "profit": "Profit",
+    "paymentMode": "Payment Mode",
+    "time": "Time"
+  },
+  "empty": {
+    "noTransactionsToday": "No transactions yet today."
+  }
+}

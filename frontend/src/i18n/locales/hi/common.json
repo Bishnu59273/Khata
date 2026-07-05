@@ -1,0 +1,27 @@
+{
+  "appName": "Khata",
+  "nav": {
+    "home": "Home",
+    "addTransaction": "Add Transaction",
+    "reports": "Reports",
+    "expenses": "Expenses"
+  },
+  "language": {
+    "en": "English",
+    "hi": "Hindi",
+    "bn": "Bengali"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "add": "Add"
+  },
+  "state": {
+    "loading": "Loading...",
+    "error": "Something went wrong. Please try again."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you're looking for doesn't exist."
+  }
+}

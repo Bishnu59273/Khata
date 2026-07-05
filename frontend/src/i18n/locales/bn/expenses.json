@@ -1,0 +1,11 @@
+{
+  "title": "Expenses",
+  "addExpense": "+ Add Expense",
+  "table": {
+    "description": "Description",
+    "category": "Category",
+    "amount": "Amount",
+    "date": "Date"
+  },
+  "comingSoon": "This page is coming soon."
+}

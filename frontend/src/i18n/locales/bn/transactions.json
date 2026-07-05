@@ -1,0 +1,13 @@
+{
+  "title": "Add Transaction",
+  "selectService": "Select a service",
+  "customerName": "Customer Name",
+  "customerCharge": "Customer Charge",
+  "costPaid": "Cost Paid",
+  "paymentMode": {
+    "cash": "Cash",
+    "upi": "UPI",
+    "online": "Online"
+  },
+  "comingSoon": "This page is coming soon."
+}

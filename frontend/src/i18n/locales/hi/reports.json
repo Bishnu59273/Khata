@@ -1,0 +1,10 @@
+{
+  "title": "Reports",
+  "range": {
+    "today": "Today",
+    "week": "This Week",
+    "month": "This Month",
+    "custom": "Custom"
+  },
+  "comingSoon": "This page is coming soon."
+}
