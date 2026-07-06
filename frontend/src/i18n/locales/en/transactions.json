@@ -7,6 +7,7 @@
   "selectService": "Pick a service",
   "entryDetails": "Entry Details",
   "selectPrompt": "Select a service to begin",
+  "quantity": "Quantity",
   "customerCharge": "Customer Charge",
   "costPaid": "Portal Cost",
   "paymentModeLabel": "Payment Mode",

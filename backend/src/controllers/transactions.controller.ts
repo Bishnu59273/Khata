@@ -21,8 +21,12 @@ export async function today(req: Request, res: Response) {
 
 export async function list(req: Request, res: Response) {
   const filters = listTransactionsQuerySchema.parse(req.query);
-  const transactions = await transactionsRepo.listTransactions(authUser(req).shopId, filters);
-  res.json(transactions);
+  const { data, total } = await transactionsRepo.listTransactions(authUser(req).shopId, filters);
+  if (filters.page) {
+    res.json({ data, total: total ?? data.length });
+  } else {
+    res.json(data);
+  }
 }
 
 export async function getOne(req: Request, res: Response) {

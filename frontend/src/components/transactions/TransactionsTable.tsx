@@ -23,6 +23,10 @@ function formatDate(isoString: string, lang: string): string {
   });
 }
 
+function formatDateTime(isoString: string, lang: string): string {
+  return `${formatDate(isoString, lang)}, ${formatTime(isoString)}`;
+}
+
 export function TransactionsTable({
   transactions,
   showDate = false,
@@ -45,12 +49,13 @@ export function TransactionsTable({
         <thead>
           <tr className="bg-tablehead">
             <th className="px-5 py-3 font-semibold text-ink-700">{t('table.service')}</th>
+            <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.qty')}</th>
             <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.charge')}</th>
             <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.cost')}</th>
             <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.profit')}</th>
             <th className="px-4 py-3 font-semibold text-ink-700">{t('table.paymentMode')}</th>
             <th className="px-5 py-3 text-right font-semibold text-ink-700">
-              {showDate ? t('table.date') : t('table.time')}
+              {showDate ? t('table.dateTime') : t('table.time')}
             </th>
             {showActions && (
               <th className="px-5 py-3 text-right font-semibold text-ink-700">{t('table.actions')}</th>
@@ -65,6 +70,7 @@ export function TransactionsTable({
               className={`border-t border-border-row ${onRowClick ? 'cursor-pointer hover:bg-brand-50/40' : ''}`}
             >
               <td className="px-5 py-3 font-semibold text-ink-900">{serviceName(tx, i18n.language)}</td>
+              <td className="px-4 py-3 text-right text-ink-600">×{tx.quantity}</td>
               <td className="px-4 py-3 text-right text-ink-900">₹{tx.customer_charge.toFixed(2)}</td>
               <td className="px-4 py-3 text-right text-cost-600">₹{tx.cost_paid.toFixed(2)}</td>
               <td className="px-4 py-3 text-right font-bold text-success-600">₹{tx.profit.toFixed(2)}</td>
@@ -77,7 +83,7 @@ export function TransactionsTable({
                 </span>
               </td>
               <td className="px-5 py-3 text-right text-ink-600">
-                {showDate ? formatDate(tx.created_at, i18n.language) : formatTime(tx.created_at)}
+                {showDate ? formatDateTime(tx.created_at, i18n.language) : formatTime(tx.created_at)}
               </td>
               {showActions && (
                 <td className="px-5 py-3">

@@ -21,6 +21,7 @@ export interface Transaction {
   customer_name: string | null;
   customer_charge: number;
   cost_paid: number;
+  quantity: number;
   profit: number;
   payment_mode: PaymentMode;
   created_at: string;

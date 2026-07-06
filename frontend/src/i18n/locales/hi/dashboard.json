@@ -9,12 +9,14 @@
   "addTransactionCta": "लेनदेन जोड़ें",
   "table": {
     "service": "सेवा",
+    "qty": "मात्रा",
     "charge": "शुल्क",
     "cost": "लागत",
     "profit": "लाभ",
     "paymentMode": "भुगतान",
     "time": "समय",
     "date": "तारीख",
+    "dateTime": "तारीख और समय",
     "actions": "कार्रवाई"
   },
   "empty": {

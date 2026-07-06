@@ -27,6 +27,7 @@ export function EditTransactionModal({
   const { data: services } = useQuery({ queryKey: ['services', 'all'], queryFn: getAllServices });
 
   const [serviceId, setServiceId] = useState(transaction.service_id);
+  const [quantity, setQuantity] = useState(String(transaction.quantity));
   const [charge, setCharge] = useState(String(transaction.customer_charge));
   const [cost, setCost] = useState(String(transaction.cost_paid));
   const [mode, setMode] = useState<PaymentMode>(transaction.payment_mode);
@@ -37,6 +38,7 @@ export function EditTransactionModal({
         service_id: serviceId,
         customer_charge: Number(charge || 0),
         cost_paid: Number(cost || 0),
+        quantity: Number(quantity || 1),
         payment_mode: mode,
       }),
     onSuccess: () => {
@@ -66,6 +68,17 @@ export function EditTransactionModal({
             </option>
           ))}
         </select>
+
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('quantity')}</label>
+        <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
+          <input
+            type="number"
+            min={1}
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
+          />
+        </div>
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('customerCharge')}</label>
         <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">

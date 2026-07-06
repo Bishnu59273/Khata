@@ -28,6 +28,7 @@ export function AddTransactionPage() {
   });
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState('1');
   const [charge, setCharge] = useState('');
   const [cost, setCost] = useState('');
   const [mode, setMode] = useState<PaymentMode>('cash');
@@ -44,8 +45,18 @@ export function AddTransactionPage() {
 
   function pickService(service: Service) {
     setSelectedId(service.id);
+    setQuantity('1');
     setCharge(String(service.default_charge));
     setCost(String(service.default_cost));
+  }
+
+  function applyQuantity(nextQuantity: number) {
+    const qty = Math.max(1, nextQuantity);
+    setQuantity(String(qty));
+    if (selectedService) {
+      setCharge(String(selectedService.default_charge * qty));
+      setCost(String(selectedService.default_cost * qty));
+    }
   }
 
   function handleSave() {
@@ -54,6 +65,7 @@ export function AddTransactionPage() {
       service_id: selectedService.id,
       customer_charge: Number(charge || 0),
       cost_paid: Number(cost || 0),
+      quantity: Number(quantity || 1),
       payment_mode: mode,
     });
   }
@@ -86,6 +98,34 @@ export function AddTransactionPage() {
         <p className="mb-4 text-xs text-ink-600">
           {selectedService ? serviceName(selectedService, i18n.language) : t('selectPrompt')}
         </p>
+
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('quantity')}</label>
+        <div className="mb-4 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => applyQuantity(Number(quantity || 1) - 1)}
+            disabled={!selectedService}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border-soft bg-white text-lg font-bold text-ink-700 disabled:opacity-50"
+          >
+            −
+          </button>
+          <input
+            type="number"
+            min={1}
+            value={quantity}
+            disabled={!selectedService}
+            onChange={(e) => applyQuantity(Number(e.target.value || 1))}
+            className="w-full rounded-xl border border-border-soft bg-white px-3.5 py-3 text-center text-xl font-bold text-ink-900 outline-none disabled:opacity-50"
+          />
+          <button
+            type="button"
+            onClick={() => applyQuantity(Number(quantity || 1) + 1)}
+            disabled={!selectedService}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-border-soft bg-white text-lg font-bold text-ink-700 disabled:opacity-50"
+          >
+            +
+          </button>
+        </div>
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t('customerCharge')}

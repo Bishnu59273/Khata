@@ -9,12 +9,14 @@
   "addTransactionCta": "Add Transaction",
   "table": {
     "service": "Service",
+    "qty": "Qty",
     "charge": "Charge",
     "cost": "Cost",
     "profit": "Profit",
     "paymentMode": "Payment",
     "time": "Time",
     "date": "Date",
+    "dateTime": "Date & Time",
     "actions": "Actions"
   },
   "empty": {

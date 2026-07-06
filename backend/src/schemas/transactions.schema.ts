@@ -7,6 +7,7 @@ export const createTransactionSchema = z.object({
   customer_name: z.string().min(1).optional(),
   customer_charge: z.number().nonnegative(),
   cost_paid: z.number().nonnegative().default(0),
+  quantity: z.number().int().positive().default(1),
   payment_mode: paymentModeSchema,
 });
 
@@ -19,6 +20,8 @@ export const listTransactionsQuerySchema = z.object({
   to: dateStringSchema.optional(),
   serviceId: z.uuid().optional(),
   paymentMode: paymentModeSchema.optional(),
+  page: z.coerce.number().int().positive().optional(),
+  limit: z.coerce.number().int().positive().max(200).optional(),
 });
 
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;

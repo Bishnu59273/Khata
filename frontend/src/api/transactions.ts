@@ -13,7 +13,13 @@ export interface CreateTransactionInput {
   customer_name?: string;
   customer_charge: number;
   cost_paid: number;
+  quantity?: number;
   payment_mode: PaymentMode;
+}
+
+export interface PagedTransactions {
+  data: Transaction[];
+  total: number;
 }
 
 export function getTodayTransactions(): Promise<Transaction[]> {
@@ -28,6 +34,19 @@ export function getTransactions(filters: TransactionFilters = {}): Promise<Trans
   if (filters.paymentMode) params.set('paymentMode', filters.paymentMode);
   const query = params.toString();
   return apiFetch<Transaction[]>(`/transactions${query ? `?${query}` : ''}`);
+}
+
+export function getTransactionsPaged(
+  filters: TransactionFilters & { page: number; limit?: number }
+): Promise<PagedTransactions> {
+  const params = new URLSearchParams();
+  if (filters.from) params.set('from', filters.from);
+  if (filters.to) params.set('to', filters.to);
+  if (filters.serviceId) params.set('serviceId', filters.serviceId);
+  if (filters.paymentMode) params.set('paymentMode', filters.paymentMode);
+  params.set('page', String(filters.page));
+  params.set('limit', String(filters.limit ?? 50));
+  return apiFetch<PagedTransactions>(`/transactions?${params.toString()}`);
 }
 
 export function createTransaction(input: CreateTransactionInput): Promise<Transaction> {

@@ -9,12 +9,14 @@
   "addTransactionCta": "লেনদেন যোগ করুন",
   "table": {
     "service": "সেবা",
+    "qty": "পরিমাণ",
     "charge": "চার্জ",
     "cost": "খরচ",
     "profit": "লাভ",
     "paymentMode": "পেমেন্ট",
     "time": "সময়",
     "date": "তারিখ",
+    "dateTime": "তারিখ ও সময়",
     "actions": "কার্যক্রম"
   },
   "empty": {

@@ -26,11 +26,11 @@ export async function listTodayTransactions(shopId: string): Promise<Transaction
 export async function listTransactions(
   shopId: string,
   filters: ListTransactionsQuery
-): Promise<Transaction[]> {
+): Promise<{ data: Transaction[]; total: number | null }> {
   const { fromISO, toISO } = resolveDateRangeQuery(filters.from, filters.to);
   let query = supabase
     .from('transactions')
-    .select(SELECT_WITH_SERVICE)
+    .select(SELECT_WITH_SERVICE, filters.page ? { count: 'exact' } : {})
     .eq('shop_id', shopId)
     .order('created_at', { ascending: false });
 
@@ -39,9 +39,15 @@ export async function listTransactions(
   if (filters.serviceId) query = query.eq('service_id', filters.serviceId);
   if (filters.paymentMode) query = query.eq('payment_mode', filters.paymentMode);
 
-  const { data, error } = await query;
+  if (filters.page) {
+    const limit = filters.limit ?? 50;
+    const start = (filters.page - 1) * limit;
+    query = query.range(start, start + limit - 1);
+  }
+
+  const { data, error, count } = await query;
   if (error) throw new AppError(500, error.message);
-  return data as unknown as Transaction[];
+  return { data: data as unknown as Transaction[], total: count };
 }
 
 export async function getTransactionById(
