@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { Button } from '../ui/button';
-import { PaymentModeToggle } from './PaymentModeToggle';
-import { getAllServices } from '../../api/services';
-import { updateTransaction } from '../../api/transactions';
-import type { PaymentMode, Service, Transaction } from '../../types/models';
+import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { PaymentModeToggle } from "./PaymentModeToggle";
+import { getAllServices } from "../../api/services";
+import { updateTransaction } from "../../api/transactions";
+import type { PaymentMode, Service, Transaction } from "../../types/models";
 
 function serviceName(service: Service, lang: string): string {
-  if (lang === 'hi') return service.name_hi;
-  if (lang === 'bn') return service.name_bn;
+  if (lang === "hi") return service.name_hi;
+  if (lang === "bn") return service.name_bn;
   return service.name_en;
 }
 
@@ -21,10 +21,13 @@ export function EditTransactionModal({
   transaction: Transaction;
   onClose: () => void;
 }) {
-  const { t, i18n } = useTranslation('transactions');
+  const { t, i18n } = useTranslation("transactions");
   const queryClient = useQueryClient();
 
-  const { data: services } = useQuery({ queryKey: ['services', 'all'], queryFn: getAllServices });
+  const { data: services } = useQuery({
+    queryKey: ["services", "all"],
+    queryFn: getAllServices,
+  });
 
   const [serviceId, setServiceId] = useState(transaction.service_id);
   const [quantity, setQuantity] = useState(String(transaction.quantity));
@@ -42,7 +45,7 @@ export function EditTransactionModal({
         payment_mode: mode,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
       onClose();
     },
   });
@@ -53,10 +56,12 @@ export function EditTransactionModal({
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t('entryDetails')}</DialogTitle>
+          <DialogTitle>{t("entryDetails")}</DialogTitle>
         </DialogHeader>
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('selectService')}</label>
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+          {t("selectService")}
+        </label>
         <select
           value={serviceId}
           onChange={(e) => setServiceId(e.target.value)}
@@ -69,7 +74,9 @@ export function EditTransactionModal({
           ))}
         </select>
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('quantity')}</label>
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+          {t("quantity")}
+        </label>
         <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
           <input
             type="number"
@@ -80,7 +87,9 @@ export function EditTransactionModal({
           />
         </div>
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('customerCharge')}</label>
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+          {t("customerCharge")}
+        </label>
         <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
           <span className="text-lg font-bold text-ink-600">₹</span>
           <input
@@ -91,7 +100,9 @@ export function EditTransactionModal({
           />
         </div>
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('costPaid')}</label>
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+          {t("costPaid")}
+        </label>
         <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
           <span className="text-lg font-bold text-ink-600">₹</span>
           <input
@@ -103,23 +114,30 @@ export function EditTransactionModal({
         </div>
 
         <div className="mb-4 flex items-center justify-between rounded-xl border border-success-border bg-success-bg px-4 py-3">
-          <span className="text-sm font-semibold text-[#4d7a5e]">{t('table.profit', { ns: 'dashboard' })}</span>
-          <span className="text-2xl font-bold text-success-600">₹{liveProfit.toFixed(2)}</span>
+          <span className="text-sm font-semibold text-[#4d7a5e]">
+            {t("table.profit", { ns: "dashboard" })}
+          </span>
+          <span className="text-2xl font-bold text-success-600">
+            ₹{liveProfit.toFixed(2)}
+          </span>
         </div>
 
-        <label className="mb-2 block text-sm font-semibold text-ink-700">{t('paymentModeLabel')}</label>
+        <label className="mb-2 block text-sm font-semibold text-ink-700">
+          {t("paymentModeLabel")}
+        </label>
         <div className="mb-5">
           <PaymentModeToggle value={mode} onChange={setMode} />
         </div>
 
         <Button
           type="button"
+          variant="success"
           size="lg"
           className="w-full"
           onClick={() => saveMutation.mutate()}
           disabled={saveMutation.isPending}
         >
-          {t('actions.save', { ns: 'common' })}
+          {t("actions.save", { ns: "common" })}
         </Button>
       </DialogContent>
     </Dialog>
