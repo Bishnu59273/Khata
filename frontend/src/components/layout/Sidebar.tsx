@@ -72,12 +72,7 @@ export function Sidebar() {
             const isActive = end ? pathname === to : pathname.startsWith(to);
             return (
               <SidebarMenuItem key={to}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={isActive}
-                  size="lg"
-                  tooltip={t(key)}
-                >
+                <SidebarMenuButton asChild isActive={isActive} size="lg">
                   <Link to={to} className="text-base font-semibold">
                     <Icon size={22} />
                     <span className="group-data-[collapsible=icon]:hidden">
@@ -106,7 +101,9 @@ export function Sidebar() {
                   <div className="truncate text-sm font-semibold text-ink-900">
                     {user?.name}
                   </div>
-                  <div className="truncate text-xs text-ink-600">{user?.email}</div>
+                  <div className="truncate text-xs text-ink-600">
+                    {user?.email}
+                  </div>
                 </div>
                 <ChevronsUpDown
                   size={16}
@@ -123,7 +120,9 @@ export function Sidebar() {
                   <div className="truncate text-sm font-semibold text-ink-900">
                     {user?.name}
                   </div>
-                  <div className="truncate text-xs text-ink-600">{user?.email}</div>
+                  <div className="truncate text-xs text-ink-600">
+                    {user?.email}
+                  </div>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />

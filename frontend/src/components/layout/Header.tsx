@@ -1,16 +1,40 @@
-import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router';
-import { SidebarTrigger } from '@/components/animate-ui/components/radix/sidebar';
-import { LanguageSwitcher } from './LanguageSwitcher';
-import { formatDateLine } from '../../utils/formatDate';
+import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router";
+import { SidebarTrigger } from "@/components/animate-ui/components/radix/sidebar";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { formatDateLine } from "../../utils/formatDate";
 
-const TITLE_NS_BY_PATH: { test: (path: string) => boolean; ns: string; titleKey?: string }[] = [
-  { test: (p) => p === '/transactions', ns: 'transactions', titleKey: 'listTitle' },
-  { test: (p) => p.startsWith('/transactions'), ns: 'transactions' },
-  { test: (p) => p.startsWith('/reports'), ns: 'reports' },
-  { test: (p) => p.startsWith('/expenses'), ns: 'expenses' },
-  { test: (p) => p.startsWith('/services'), ns: 'services' },
-  { test: () => true, ns: 'dashboard' },
+const TITLE_NS_BY_PATH: {
+  test: (path: string) => boolean;
+  ns: string;
+  listTitle?: string;
+}[] = [
+  {
+    test: (p) => p === "/transactions",
+    ns: "transactions",
+    listTitle: "All Transactions",
+  },
+  {
+    test: (p) => p.startsWith("/transactions/new"),
+    ns: "transactions",
+    listTitle: "Add Transaction",
+  },
+  {
+    test: (p) => p.startsWith("/reports"),
+    ns: "reports",
+    listTitle: "Reports",
+  },
+  {
+    test: (p) => p.startsWith("/expenses"),
+    ns: "expenses",
+    listTitle: "Expenses",
+  },
+  {
+    test: (p) => p.startsWith("/services"),
+    ns: "services",
+    listTitle: "Services",
+  },
+  { test: () => true, ns: "dashboard" },
 ];
 
 export function Header() {
@@ -23,8 +47,12 @@ export function Header() {
       <div className="flex items-center gap-3">
         <SidebarTrigger className="size-10 rounded-xl border border-border-soft text-ink-700 hover:bg-brand-50" />
         <div>
-          <div className="text-lg font-bold leading-tight text-ink-900">{t(entry.titleKey ?? 'title')}</div>
-          <div className="mt-0.5 text-sm text-ink-600">{formatDateLine(i18n.language)}</div>
+          <div className="text-lg font-bold leading-tight text-ink-900">
+            {t(entry.listTitle ?? "title")}
+          </div>
+          <div className="mt-0.5 text-sm text-ink-600">
+            {formatDateLine(i18n.language)}
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-2">
