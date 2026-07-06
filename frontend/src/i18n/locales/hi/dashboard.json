@@ -7,6 +7,7 @@
   "transactionCount": "लेनदेन संख्या",
   "todaysTransactions": "आज के लेनदेन",
   "addTransactionCta": "लेनदेन जोड़ें",
+  "showAll": "सभी देखें",
   "table": {
     "service": "सेवा",
     "qty": "मात्रा",

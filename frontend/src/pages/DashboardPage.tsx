@@ -20,6 +20,8 @@ export function DashboardPage() {
   });
 
   const aggregates = aggregateTransactions(data ?? []);
+  const TODAY_PREVIEW_LIMIT = 25;
+  const visibleTransactions = data?.slice(0, TODAY_PREVIEW_LIMIT) ?? [];
 
   return (
     <div className="flex flex-col gap-6">
@@ -52,7 +54,14 @@ export function DashboardPage() {
           </div>
 
           <div>
-            <h2 className="mb-3 text-base font-bold text-ink-900">{t('todaysTransactions')}</h2>
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-base font-bold text-ink-900">{t('todaysTransactions')}</h2>
+              {data.length > TODAY_PREVIEW_LIMIT && (
+                <Link to="/transactions" className="text-sm font-semibold text-brand-600 hover:underline">
+                  {t('showAll')}
+                </Link>
+              )}
+            </div>
             {data.length === 0 ? (
               <EmptyState
                 icon="🗒️"
@@ -60,7 +69,10 @@ export function DashboardPage() {
                 action={{ label: t('addTransactionCta'), to: '/transactions/new' }}
               />
             ) : (
-              <TransactionsTable transactions={data} onRowClick={() => navigate('/transactions')} />
+              <TransactionsTable
+                transactions={visibleTransactions}
+                onRowClick={() => navigate('/transactions')}
+              />
             )}
           </div>
         </>

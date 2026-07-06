@@ -7,6 +7,7 @@
   "transactionCount": "Transactions",
   "todaysTransactions": "Today's Transactions",
   "addTransactionCta": "Add Transaction",
+  "showAll": "Show all",
   "table": {
     "service": "Service",
     "qty": "Qty",
