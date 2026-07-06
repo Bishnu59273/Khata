@@ -5,6 +5,7 @@ export interface ServiceInput {
   name_en: string;
   name_hi: string;
   name_bn: string;
+  emoji: string;
   default_charge: number;
   default_cost: number;
 }

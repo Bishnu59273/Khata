@@ -8,6 +8,7 @@ export interface ServiceSummary {
 }
 
 export interface Service extends ServiceSummary {
+  emoji: string;
   default_charge: number;
   default_cost: number;
   is_active: boolean;

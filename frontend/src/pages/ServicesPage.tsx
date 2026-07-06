@@ -7,7 +7,6 @@ import { ServiceFormModal } from '../components/services/ServiceFormModal';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
-import { serviceEmoji } from '../utils/serviceEmoji';
 import type { Service } from '../types/models';
 
 export function ServicesPage() {
@@ -61,7 +60,7 @@ export function ServicesPage() {
                   }`}
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-2xl">
-                    {serviceEmoji(service.name_en)}
+                    {service.emoji}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">

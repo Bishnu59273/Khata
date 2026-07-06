@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { ChevronDown } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../ui/dialog';
 import { Button } from '../ui/button';
+import { EmojiPicker } from '../ui/emoji-picker';
 import { createService, updateService } from '../../api/services';
 import type { Service } from '../../types/models';
 
@@ -19,6 +21,10 @@ export function ServiceFormModal({
   const [nameEn, setNameEn] = useState(service?.name_en ?? '');
   const [nameHi, setNameHi] = useState(service?.name_hi ?? '');
   const [nameBn, setNameBn] = useState(service?.name_bn ?? '');
+  const [emoji, setEmoji] = useState(service?.emoji ?? '🧰');
+  const [showTranslations, setShowTranslations] = useState(
+    !!(service && (service.name_hi !== service.name_en || service.name_bn !== service.name_en)),
+  );
   const [charge, setCharge] = useState(String(service?.default_charge ?? ''));
   const [cost, setCost] = useState(String(service?.default_cost ?? ''));
 
@@ -28,8 +34,9 @@ export function ServiceFormModal({
     mutationFn: () => {
       const input = {
         name_en: nameEn.trim(),
-        name_hi: nameHi.trim(),
-        name_bn: nameBn.trim(),
+        name_hi: nameHi.trim() || nameEn.trim(),
+        name_bn: nameBn.trim() || nameEn.trim(),
+        emoji,
         default_charge: Number(charge || 0),
         default_cost: Number(cost || 0),
       };
@@ -49,8 +56,7 @@ export function ServiceFormModal({
     },
   });
 
-  const canSave =
-    !!nameEn.trim() && !!nameHi.trim() && !!nameBn.trim() && charge !== '' && !saveMutation.isPending;
+  const canSave = !!nameEn.trim() && charge !== '' && !saveMutation.isPending;
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
@@ -59,28 +65,55 @@ export function ServiceFormModal({
           <DialogTitle>{service ? t('editService') : t('addService')}</DialogTitle>
         </DialogHeader>
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('nameEn')}</label>
-        <input
-          value={nameEn}
-          onChange={(e) => setNameEn(e.target.value)}
-          className="mb-3 w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
-        />
+        <div className="mb-3 flex items-end gap-3">
+          <div>
+            <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('icon')}</label>
+            <EmojiPicker value={emoji} onChange={setEmoji} />
+          </div>
+          <div className="flex-1">
+            <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('serviceName')}</label>
+            <input
+              value={nameEn}
+              onChange={(e) => setNameEn(e.target.value)}
+              className="w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
+              autoFocus
+            />
+          </div>
+        </div>
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('nameHi')}</label>
-        <input
-          value={nameHi}
-          onChange={(e) => setNameHi(e.target.value)}
-          className="mb-3 w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
-        />
+        <button
+          type="button"
+          onClick={() => setShowTranslations((v) => !v)}
+          className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-brand-600"
+        >
+          <ChevronDown size={16} className={showTranslations ? 'rotate-180 transition-transform' : 'transition-transform'} />
+          {t('addTranslations')}
+        </button>
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('nameBn')}</label>
-        <input
-          value={nameBn}
-          onChange={(e) => setNameBn(e.target.value)}
-          className="mb-3 w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
-        />
+        {showTranslations && (
+          <div className="mb-1 flex flex-col gap-3 rounded-xl border border-border-soft bg-cream/50 p-3">
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('nameHi')}</label>
+              <input
+                value={nameHi}
+                onChange={(e) => setNameHi(e.target.value)}
+                placeholder={nameEn}
+                className="w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
+              />
+            </div>
+            <div>
+              <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('nameBn')}</label>
+              <input
+                value={nameBn}
+                onChange={(e) => setNameBn(e.target.value)}
+                placeholder={nameEn}
+                className="w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
+              />
+            </div>
+          </div>
+        )}
 
-        <div className="mb-4 grid grid-cols-2 gap-3">
+        <div className="mt-4 mb-4 grid grid-cols-2 gap-3">
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('defaultCharge')}</label>
             <div className="flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">

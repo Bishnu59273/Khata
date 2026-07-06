@@ -22,7 +22,11 @@ export async function getOne(req: Request, res: Response) {
 
 export async function create(req: Request, res: Response) {
   const input = createServiceSchema.parse(req.body);
-  const service = await servicesRepo.createService(authUser(req).shopId, input);
+  const service = await servicesRepo.createService(authUser(req).shopId, {
+    ...input,
+    name_hi: input.name_hi ?? input.name_en,
+    name_bn: input.name_bn ?? input.name_en,
+  });
   res.status(201).json(service);
 }
 

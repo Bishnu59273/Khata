@@ -31,13 +31,13 @@ import { useAuth } from "../../context/AuthContext";
 
 const NAV_ITEMS = [
   { to: "/", icon: Home, key: "nav.home", end: true },
-  { to: "/transactions", icon: Receipt, key: "nav.transactions", end: true },
   {
     to: "/transactions/new",
     icon: PlusCircle,
     key: "nav.addTransaction",
     end: false,
   },
+  { to: "/transactions", icon: Receipt, key: "nav.transactions", end: true },
   { to: "/reports", icon: BarChart3, key: "nav.reports", end: false },
   { to: "/expenses", icon: Wallet, key: "nav.expenses", end: false },
   { to: "/services", icon: Layers, key: "nav.services", end: false },

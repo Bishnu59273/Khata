@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { serviceEmoji } from '../../utils/serviceEmoji';
 import type { Service } from '../../types/models';
 
 interface ServicePresetCardProps {
@@ -28,7 +27,7 @@ export function ServicePresetCard({ service, name, selected, onClick }: ServiceP
           selected ? 'bg-brand-500/[13%]' : 'bg-brand-50'
         }`}
       >
-        {serviceEmoji(service.name_en)}
+        {service.emoji}
       </div>
       <div className="min-w-0">
         <div className="truncate text-[15px] font-bold leading-tight text-ink-900">{name}</div>

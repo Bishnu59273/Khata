@@ -56,18 +56,20 @@ type DropdownMenuContentProps = Omit<
 function DropdownMenuContent({
   sideOffset = 4,
   transition = { duration: 0.15, ease: 'easeOut' },
+  children,
   ...props
 }: DropdownMenuContentProps) {
   return (
     <DropdownMenuPortal>
-      <DropdownMenuPrimitive.Content asChild sideOffset={sideOffset}>
+      <DropdownMenuPrimitive.Content asChild sideOffset={sideOffset} {...props}>
         <motion.div
           data-slot="dropdown-menu-content"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={transition}
-          {...props}
-        />
+        >
+          {children}
+        </motion.div>
       </DropdownMenuPrimitive.Content>
     </DropdownMenuPortal>
   );
