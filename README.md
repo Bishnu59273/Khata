@@ -1,13 +1,43 @@
 # Khata
 
-A daily income/profit tracker for a CSC (Common Service Centre) shop. Every transaction
-records what the customer paid, what the service actually cost, and the resulting profit —
-so daily profit is visible, not just cash collected.
+**Khata** (Hindi/Bengali for "ledger") is a daily income and profit tracker built for small
+service shops in India — CSCs (Common Service Centres), cyber cafés, Xerox/DTP shops, and
+similar counters that resell government or utility services (printing, form filling, bill
+payments, ID card services, etc.) for a fixed customer charge, while paying a smaller portal/
+vendor cost to actually deliver the service.
+
+The gap Khata closes: most shop owners only track cash collected, not what they actually paid
+out to third-party portals for each service — so they don't have a clear, day-to-day view of
+real profit. Khata records both sides of every transaction (what the customer paid vs. what the
+service cost) and turns the difference into a profit figure you can see at a glance.
+
+## What you can do with it
+
+- **Run one login per shop, multiple staff.** Sign up once to create a shop account; the shop
+  owns all of its services, transactions, and expenses. Authentication is a simple email +
+  password login backed by an httpOnly session cookie.
+- **Define your services once.** Each service (e.g. "Xerox", "Passport Photo", "Aadhaar Update")
+  has a name (English/Hindi/Bengali), an emoji icon, a default customer charge, and a default
+  portal cost. Profit per unit is shown automatically.
+- **Log a transaction in two taps.** Pick a service, and its default charge/cost are pre-filled.
+  Adjust the quantity to record several units of the same service in one entry (e.g. 100 Xerox
+  copies) instead of adding the same transaction 100 times — the charge and cost scale
+  automatically, and can still be overridden by hand (discounts, custom pricing, etc.).
+- **See today at a glance.** The dashboard shows today's profit, total collected, total cost, and
+  transaction count, plus a preview of today's transactions (first 25, with a "Show all" link to
+  the full list once there are more).
+- **Browse full history with pagination.** The "All Transactions" page paginates 50 rows at a
+  time instead of loading the entire history at once.
+- **Run reports over a date range.** Today / this week / this month / a custom range, with
+  totals and a 7-day profit trend chart.
+- **Track expenses** separately from service transactions (rent, electricity, stationery, etc.).
+- **Use it in English, Hindi, or Bengali** — the UI language is switchable and defaults to
+  Bengali.
 
 ## Stack
 
 - **Frontend**: React + Vite + TypeScript + Tailwind CSS, i18next (English/Hindi/Bengali, default Bengali)
-- **Backend**: Node.js + Express + TypeScript
+- **Backend**: Node.js + Express + TypeScript, JWT-based sessions in a signed httpOnly cookie
 - **Database**: PostgreSQL via Supabase, accessed only from the backend using the `service_role` key
 
 ## Project layout
@@ -24,8 +54,13 @@ Each is an independent Node project — see their own `.env.example` for require
 ### 1. Create the Supabase project and schema
 
 1. Create a new project at [supabase.com](https://supabase.com).
-2. Open the SQL editor and run `backend/supabase/migrations/0001_init.sql`.
-3. (Optional, for local testing) Run `backend/supabase/seed.sql` to insert a handful of sample services.
+2. Open the SQL editor and run every file in `backend/supabase/migrations/` **in order**
+   (`0001_init.sql`, `0002_auth_and_multitenancy.sql`, `0003_service_emoji.sql`,
+   `0004_transaction_quantity.sql`). There is no migration-runner CLI wired up yet — apply each
+   one manually.
+3. (Optional, for local testing) Run `backend/supabase/seed.sql` to insert a handful of sample
+   services. Note that migration `0002` truncates `services`/`transactions`/`expenses` as part of
+   adding multi-tenancy, so seed *after* running all migrations.
 4. In your Supabase project settings, copy the **Project URL** and the **service_role key**
    (Settings → API). The service_role key must never be exposed to the frontend or committed to git.
 
@@ -34,7 +69,7 @@ Each is an independent Node project — see their own `.env.example` for require
 ```
 cd backend
 cp .env.example .env
-# fill in SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env
+# fill in SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and JWT_SECRET in .env
 npm install
 npm run dev
 ```
@@ -51,19 +86,19 @@ npm install
 npm run dev
 ```
 
-Open the printed local URL (typically `http://localhost:5173`).
+Open the printed local URL (typically `http://localhost:5173`). Sign up to create your shop
+account, then add your services before logging transactions.
 
 ## Notes
 
-- **Translations**: the Hindi (`hi`) and Bengali (`bn`) locale files under
-  `frontend/src/i18n/locales/` currently hold the same English placeholder text as `en`, so the
-  UI works out of the box. Replace them with real translations before this goes in front of the
-  actual end user — the key structure is already in place, only the values need to change.
-- **RLS**: all three tables have Row Level Security enabled with no policies for `anon`/`authenticated`,
+- **RLS**: all tables have Row Level Security enabled with no policies for `anon`/`authenticated`,
   which denies all access by default. Only the backend, using the `service_role` key (which bypasses
   RLS), can read or write data. The frontend never talks to Supabase directly.
-- **API auth gap**: the Express API itself has no authentication layer yet. This is fine for local
-  development, but before deploying it publicly (e.g. to Render), add a shared-secret header check
-  so the REST endpoints aren't wide open to anyone who finds the URL.
-- **Deployment** (not set up yet): the frontend is intended for Vercel and the backend for Render,
-  each pointed at its respective subfolder as the project root.
+- **Multi-tenancy**: every service, transaction, and expense row is scoped to a `shop_id`. The
+  backend derives `shop_id` from the signed session cookie on every request, so shops can never
+  see or modify each other's data.
+- **Health check**: `GET /health` (outside the `/api` prefix, no auth) returns `200 {"status":"ok"}`.
+  Point an uptime monitor (e.g. UptimeRobot) at it every 5 minutes to keep a free-tier Render
+  instance from idling out.
+- **Deployment**: the frontend is intended for Vercel and the backend for Render, each pointed at
+  its respective subfolder as the project root.
