@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router';
 import { useAuth } from '../context/AuthContext';
 import { ApiError } from '../api/client';
+import { PasswordInput } from '../components/common/PasswordInput';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -62,13 +63,7 @@ export function LoginPage() {
       />
 
       <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('login.password')}</label>
-      <input
-        type="password"
-        autoComplete="current-password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="mb-4 w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
-      />
+      <PasswordInput autoComplete="current-password" value={password} onChange={setPassword} />
 
       {errorMessage && <p className="mb-4 text-sm font-medium text-danger-600">{errorMessage}</p>}
 

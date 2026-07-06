@@ -19,7 +19,9 @@
     "cancel": "रद्द करें",
     "add": "जोड़ें",
     "edit": "संपादित करें",
-    "delete": "हटाएं"
+    "delete": "हटाएं",
+    "showPassword": "पासवर्ड दिखाएं",
+    "hidePassword": "पासवर्ड छिपाएं"
   },
   "confirmDelete": "क्या आप वाकई इसे हटाना चाहते हैं?",
   "pagination": {

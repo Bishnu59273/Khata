@@ -19,7 +19,9 @@
     "cancel": "বাতিল করুন",
     "add": "যোগ করুন",
     "edit": "সম্পাদনা করুন",
-    "delete": "মুছুন"
+    "delete": "মুছুন",
+    "showPassword": "পাসওয়ার্ড দেখান",
+    "hidePassword": "পাসওয়ার্ড লুকান"
   },
   "confirmDelete": "আপনি কি নিশ্চিত যে এটি মুছতে চান?",
   "pagination": {
