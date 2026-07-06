@@ -32,11 +32,11 @@ service cost) and turns the difference into a profit figure you can see at a gla
   totals and a 7-day profit trend chart.
 - **Track expenses** separately from service transactions (rent, electricity, stationery, etc.).
 - **Use it in English, Hindi, or Bengali** — the UI language is switchable and defaults to
-  Bengali.
+  English.
 
 ## Stack
 
-- **Frontend**: React + Vite + TypeScript + Tailwind CSS, i18next (English/Hindi/Bengali, default Bengali)
+- **Frontend**: React + Vite + TypeScript + Tailwind CSS, i18next (English/Hindi/Bengali, default English)
 - **Backend**: Node.js + Express + TypeScript, JWT-based sessions in a signed httpOnly cookie
 - **Database**: PostgreSQL via Supabase, accessed only from the backend using the `service_role` key
 

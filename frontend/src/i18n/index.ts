@@ -64,12 +64,12 @@ i18n
   .init({
     resources,
     supportedLngs: ['en', 'hi', 'bn'],
-    fallbackLng: 'bn',
+    fallbackLng: 'en',
     defaultNS,
     ns: ['common', 'dashboard', 'transactions', 'reports', 'expenses', 'services', 'auth'],
     interpolation: { escapeValue: false },
-    // Only an explicit prior choice overrides the Bengali default — the OS/browser
-    // locale (e.g. an English-language Windows install) must not silently win.
+    // Only an explicit prior choice overrides the English default — the OS/browser
+    // locale (e.g. a Hindi-language Windows install) must not silently win.
     detection: {
       order: ['localStorage'],
       caches: ['localStorage'],
