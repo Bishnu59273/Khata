@@ -8,6 +8,8 @@ import { AddTransactionPage } from "../pages/AddTransactionPage";
 import { ReportsPage } from "../pages/ReportsPage";
 import { ExpensesPage } from "../pages/ExpensesPage";
 import { ServicesPage } from "../pages/ServicesPage";
+import { SettingsPage } from "../pages/SettingsPage";
+import { BillPreviewPage } from "../pages/BillPreviewPage";
 import { LoginPage } from "../pages/LoginPage";
 import { SignupPage } from "../pages/SignupPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
@@ -29,8 +31,17 @@ export const router = createBrowserRouter([
       { path: "reports", element: <ReportsPage /> },
       { path: "expenses", element: <ExpensesPage /> },
       { path: "services", element: <ServicesPage /> },
+      { path: "settings", element: <SettingsPage /> },
       { path: "*", element: <NotFoundPage /> },
     ],
+  },
+  {
+    path: "bills/preview",
+    element: (
+      <RequireAuth>
+        <BillPreviewPage />
+      </RequireAuth>
+    ),
   },
   {
     element: <AuthLayout />,

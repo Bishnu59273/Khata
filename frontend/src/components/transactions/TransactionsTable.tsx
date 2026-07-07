@@ -33,12 +33,18 @@ export function TransactionsTable({
   onRowClick,
   onEdit,
   onDelete,
+  selectable = false,
+  selectedIds,
+  onToggleSelect,
 }: {
   transactions: Transaction[];
   showDate?: boolean;
   onRowClick?: (transaction: Transaction) => void;
   onEdit?: (transaction: Transaction) => void;
   onDelete?: (transaction: Transaction) => void;
+  selectable?: boolean;
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string) => void;
 }) {
   const { t, i18n } = useTranslation('dashboard');
   const showActions = !!onEdit || !!onDelete;
@@ -48,6 +54,7 @@ export function TransactionsTable({
       <table className="w-full text-left text-[14.5px]">
         <thead>
           <tr className="bg-tablehead">
+            {selectable && <th className="w-10 px-5 py-3" />}
             <th className="px-5 py-3 font-semibold text-ink-700">{t('table.service')}</th>
             <th className="px-4 py-3 font-semibold text-ink-700">{t('table.customer')}</th>
             <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.qty')}</th>
@@ -70,6 +77,16 @@ export function TransactionsTable({
               onClick={onRowClick ? () => onRowClick(tx) : undefined}
               className={`border-t border-border-row ${onRowClick ? 'cursor-pointer hover:bg-brand-50/40' : ''}`}
             >
+              {selectable && (
+                <td className="px-5 py-3" onClick={(e) => e.stopPropagation()}>
+                  <input
+                    type="checkbox"
+                    checked={selectedIds?.has(tx.id) ?? false}
+                    onChange={() => onToggleSelect?.(tx.id)}
+                    className="h-4 w-4 accent-brand-500"
+                  />
+                </td>
+              )}
               <td className="px-5 py-3 font-semibold text-ink-900">{serviceName(tx, i18n.language)}</td>
               <td className="px-4 py-3 text-ink-600">{tx.customer_name || '—'}</td>
               <td className="px-4 py-3 text-right text-ink-600">×{tx.quantity}</td>

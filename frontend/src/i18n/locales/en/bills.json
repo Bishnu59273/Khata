@@ -1,0 +1,21 @@
+{
+  "back": "Back",
+  "print": "Print",
+  "billTo": "Bill To",
+  "date": "Date",
+  "grandTotal": "Grand Total",
+  "invoice": "Invoice",
+  "walkInCustomer": "Walk-in Customer",
+  "thankYou": "Thank you for your business!",
+  "template": {
+    "receipt": "Receipt",
+    "invoice": "Invoice"
+  },
+  "table": {
+    "service": "Service",
+    "qty": "Qty",
+    "paymentMode": "Payment",
+    "date": "Date",
+    "amount": "Amount"
+  }
+}

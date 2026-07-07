@@ -1,0 +1,21 @@
+{
+  "back": "পিছনে",
+  "print": "প্রিন্ট করুন",
+  "billTo": "বিল প্রাপক",
+  "date": "তারিখ",
+  "grandTotal": "সর্বমোট",
+  "invoice": "ইনভয়েস",
+  "walkInCustomer": "সাধারণ গ্রাহক",
+  "thankYou": "আপনার ব্যবসার জন্য ধন্যবাদ!",
+  "template": {
+    "receipt": "রসিদ",
+    "invoice": "ইনভয়েস"
+  },
+  "table": {
+    "service": "সেবা",
+    "qty": "পরিমাণ",
+    "paymentMode": "পেমেন্ট",
+    "date": "তারিখ",
+    "amount": "পরিমাণ"
+  }
+}

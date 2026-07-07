@@ -7,7 +7,8 @@
     "addTransaction": "Add Transaction",
     "reports": "Reports",
     "expenses": "Expenses",
-    "services": "Services"
+    "services": "Services",
+    "settings": "Settings"
   },
   "language": {
     "en": "English",

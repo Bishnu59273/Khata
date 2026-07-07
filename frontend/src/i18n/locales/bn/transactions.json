@@ -9,6 +9,8 @@
   "selectPrompt": "শুরু করতে একটি সেবা নির্বাচন করুন",
   "customerName": "গ্রাহকের নাম",
   "customerNamePlaceholder": "ঐচ্ছিক",
+  "customerSearchPlaceholder": "গ্রাহকের নাম দিয়ে খুঁজুন",
+  "generateBill": "বিল তৈরি করুন",
   "quantity": "পরিমাণ",
   "customerCharge": "গ্রাহক চার্জ",
   "costPaid": "পোর্টাল খরচ",

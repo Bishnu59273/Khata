@@ -1,0 +1,21 @@
+{
+  "back": "वापस",
+  "print": "प्रिंट करें",
+  "billTo": "बिल प्राप्तकर्ता",
+  "date": "तारीख",
+  "grandTotal": "कुल योग",
+  "invoice": "इनवॉइस",
+  "walkInCustomer": "सामान्य ग्राहक",
+  "thankYou": "आपके सहयोग के लिए धन्यवाद!",
+  "template": {
+    "receipt": "रसीद",
+    "invoice": "इनवॉइस"
+  },
+  "table": {
+    "service": "सेवा",
+    "qty": "मात्रा",
+    "paymentMode": "भुगतान",
+    "date": "तारीख",
+    "amount": "राशि"
+  }
+}

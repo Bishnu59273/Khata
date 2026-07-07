@@ -12,7 +12,7 @@ const PASSWORD_HASH_ROUNDS = 12;
 function toAuthResponse(user: AuthUser): AuthResponse {
   return {
     user: { id: user.id, name: user.name, email: user.email },
-    shop: { id: user.shopId, name: user.shopName },
+    shop: { id: user.shopId, name: user.shopName, address: null, phone: null, gstin: null },
   };
 }
 
@@ -85,5 +85,13 @@ export async function logout(_req: Request, res: Response) {
 }
 
 export async function me(req: Request, res: Response) {
-  res.json(toAuthResponse(getAuthUser(req)));
+  const user = getAuthUser(req);
+  const shop = await shopsRepo.getShopById(user.shopId);
+  if (!shop) throw new AppError(500, 'Shop not found for user');
+
+  const response: AuthResponse = {
+    user: { id: user.id, name: user.name, email: user.email },
+    shop: { id: shop.id, name: shop.name, address: shop.address, phone: shop.phone, gstin: shop.gstin },
+  };
+  res.json(response);
 }

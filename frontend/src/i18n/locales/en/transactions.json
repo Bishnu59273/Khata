@@ -9,6 +9,8 @@
   "selectPrompt": "Select a service to begin",
   "customerName": "Customer Name",
   "customerNamePlaceholder": "Optional",
+  "customerSearchPlaceholder": "Search by customer name",
+  "generateBill": "Generate Bill",
   "quantity": "Quantity",
   "customerCharge": "Customer Charge",
   "costPaid": "Portal Cost",

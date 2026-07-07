@@ -9,6 +9,8 @@ import enReports from './locales/en/reports.json';
 import enExpenses from './locales/en/expenses.json';
 import enServices from './locales/en/services.json';
 import enAuth from './locales/en/auth.json';
+import enSettings from './locales/en/settings.json';
+import enBills from './locales/en/bills.json';
 
 import hiCommon from './locales/hi/common.json';
 import hiDashboard from './locales/hi/dashboard.json';
@@ -17,6 +19,8 @@ import hiReports from './locales/hi/reports.json';
 import hiExpenses from './locales/hi/expenses.json';
 import hiServices from './locales/hi/services.json';
 import hiAuth from './locales/hi/auth.json';
+import hiSettings from './locales/hi/settings.json';
+import hiBills from './locales/hi/bills.json';
 
 import bnCommon from './locales/bn/common.json';
 import bnDashboard from './locales/bn/dashboard.json';
@@ -25,6 +29,8 @@ import bnReports from './locales/bn/reports.json';
 import bnExpenses from './locales/bn/expenses.json';
 import bnServices from './locales/bn/services.json';
 import bnAuth from './locales/bn/auth.json';
+import bnSettings from './locales/bn/settings.json';
+import bnBills from './locales/bn/bills.json';
 
 export const defaultNS = 'common';
 
@@ -37,6 +43,8 @@ export const resources = {
     expenses: enExpenses,
     services: enServices,
     auth: enAuth,
+    settings: enSettings,
+    bills: enBills,
   },
   hi: {
     common: hiCommon,
@@ -46,6 +54,8 @@ export const resources = {
     expenses: hiExpenses,
     services: hiServices,
     auth: hiAuth,
+    settings: hiSettings,
+    bills: hiBills,
   },
   bn: {
     common: bnCommon,
@@ -55,6 +65,8 @@ export const resources = {
     expenses: bnExpenses,
     services: bnServices,
     auth: bnAuth,
+    settings: bnSettings,
+    bills: bnBills,
   },
 } as const;
 
@@ -66,7 +78,7 @@ i18n
     supportedLngs: ['en', 'hi', 'bn'],
     fallbackLng: 'en',
     defaultNS,
-    ns: ['common', 'dashboard', 'transactions', 'reports', 'expenses', 'services', 'auth'],
+    ns: ['common', 'dashboard', 'transactions', 'reports', 'expenses', 'services', 'auth', 'settings', 'bills'],
     interpolation: { escapeValue: false },
     // Only an explicit prior choice overrides the English default — the OS/browser
     // locale (e.g. a Hindi-language Windows install) must not silently win.

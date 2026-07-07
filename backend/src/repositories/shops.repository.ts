@@ -38,7 +38,14 @@ export async function createShopWithOwner(
 
   const row = (data as CreateShopWithOwnerRow[])[0];
   return {
-    shop: { id: row.shop_id, name: row.shop_name, created_at: row.shop_created_at },
+    shop: {
+      id: row.shop_id,
+      name: row.shop_name,
+      address: null,
+      phone: null,
+      gstin: null,
+      created_at: row.shop_created_at,
+    },
     user: {
       id: row.user_id,
       shop_id: row.shop_id,
@@ -59,4 +66,18 @@ export async function getShopById(id: string): Promise<Shop | null> {
   const { data, error } = await supabase.from('shops').select('*').eq('id', id).maybeSingle();
   if (error) throw new AppError(500, error.message);
   return data as Shop | null;
+}
+
+export async function updateShop(
+  id: string,
+  patch: Partial<Pick<Shop, 'name' | 'address' | 'phone' | 'gstin'>>
+): Promise<Shop> {
+  const { data, error } = await supabase
+    .from('shops')
+    .update(patch)
+    .eq('id', id)
+    .select('*')
+    .single();
+  if (error) throw new AppError(500, error.message);
+  return data as Shop;
 }

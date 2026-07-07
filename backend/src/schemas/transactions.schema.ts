@@ -20,6 +20,7 @@ export const listTransactionsQuerySchema = z.object({
   to: dateStringSchema.optional(),
   serviceId: z.uuid().optional(),
   paymentMode: paymentModeSchema.optional(),
+  customerName: z.string().min(1).optional(),
   page: z.coerce.number().int().positive().optional(),
   limit: z.coerce.number().int().positive().max(200).optional(),
 });

@@ -5,6 +5,7 @@ import {
   BarChart3,
   Wallet,
   Layers,
+  Settings,
   ChevronsUpDown,
   LogOut,
 } from "lucide-react";
@@ -41,6 +42,7 @@ const NAV_ITEMS = [
   { to: "/reports", icon: BarChart3, key: "nav.reports", end: false },
   { to: "/expenses", icon: Wallet, key: "nav.expenses", end: false },
   { to: "/services", icon: Layers, key: "nav.services", end: false },
+  { to: "/settings", icon: Settings, key: "nav.settings", end: false },
 ] as const;
 
 export function Sidebar() {

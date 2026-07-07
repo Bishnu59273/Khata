@@ -7,6 +7,9 @@ export interface User {
 export interface Shop {
   id: string;
   name: string;
+  address: string | null;
+  phone: string | null;
+  gstin: string | null;
 }
 
 export interface Me {

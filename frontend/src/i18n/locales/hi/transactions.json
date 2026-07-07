@@ -9,6 +9,8 @@
   "selectPrompt": "शुरू करने के लिए एक सेवा चुनें",
   "customerName": "ग्राहक का नाम",
   "customerNamePlaceholder": "वैकल्पिक",
+  "customerSearchPlaceholder": "ग्राहक के नाम से खोजें",
+  "generateBill": "बिल बनाएं",
   "quantity": "मात्रा",
   "customerCharge": "ग्राहक शुल्क",
   "costPaid": "पोर्टल लागत",

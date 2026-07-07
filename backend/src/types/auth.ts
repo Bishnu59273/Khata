@@ -1,6 +1,9 @@
 export interface Shop {
   id: string;
   name: string;
+  address: string | null;
+  phone: string | null;
+  gstin: string | null;
   created_at: string;
 }
 
@@ -33,5 +36,5 @@ export interface JwtPayload {
 
 export interface AuthResponse {
   user: { id: string; name: string; email: string };
-  shop: { id: string; name: string };
+  shop: { id: string; name: string; address: string | null; phone: string | null; gstin: string | null };
 }

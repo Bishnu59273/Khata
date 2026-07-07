@@ -38,6 +38,7 @@ export async function listTransactions(
   if (toISO) query = query.lt('created_at', toISO);
   if (filters.serviceId) query = query.eq('service_id', filters.serviceId);
   if (filters.paymentMode) query = query.eq('payment_mode', filters.paymentMode);
+  if (filters.customerName) query = query.ilike('customer_name', `%${filters.customerName}%`);
 
   if (filters.page) {
     const limit = filters.limit ?? 50;
