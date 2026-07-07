@@ -41,7 +41,7 @@ export function AddTransactionPage() {
     mutationFn: createTransaction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
-      navigate('/');
+      navigate('/dashboard');
     },
   });
 

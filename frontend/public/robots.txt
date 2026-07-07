@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /transactions
+Disallow: /reports
+Disallow: /expenses
+Disallow: /services
+
+Sitemap: https://khata-ebon.vercel.app/sitemap.xml

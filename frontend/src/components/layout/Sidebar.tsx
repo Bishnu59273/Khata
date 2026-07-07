@@ -30,7 +30,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 
 const NAV_ITEMS = [
-  { to: "/", icon: Home, key: "nav.home", end: true },
+  { to: "/dashboard", icon: Home, key: "nav.home", end: true },
   {
     to: "/transactions/new",
     icon: PlusCircle,

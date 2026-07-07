@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import { AppLayout } from "../layouts/AppLayout";
 import { AuthLayout } from "../layouts/AuthLayout";
+import { LandingPage } from "../pages/LandingPage";
 import { DashboardPage } from "../pages/DashboardPage";
 import { TransactionsPage } from "../pages/TransactionsPage";
 import { AddTransactionPage } from "../pages/AddTransactionPage";
@@ -14,15 +15,15 @@ import { RequireAuth } from "./RequireAuth";
 import { RedirectIfAuthenticated } from "./RedirectIfAuthenticated";
 
 export const router = createBrowserRouter([
+  { path: "/", element: <LandingPage /> },
   {
-    path: "/",
     element: (
       <RequireAuth>
         <AppLayout />
       </RequireAuth>
     ),
     children: [
-      { index: true, element: <DashboardPage /> },
+      { path: "dashboard", element: <DashboardPage /> },
       { path: "transactions", element: <TransactionsPage /> },
       { path: "transactions/new", element: <AddTransactionPage /> },
       { path: "reports", element: <ReportsPage /> },
