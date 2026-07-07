@@ -10,6 +10,7 @@
   "showAll": "Show all",
   "table": {
     "service": "Service",
+    "customer": "Customer",
     "qty": "Qty",
     "charge": "Charge",
     "cost": "Cost",

@@ -10,6 +10,7 @@
   "showAll": "সব দেখুন",
   "table": {
     "service": "সেবা",
+    "customer": "গ্রাহক",
     "qty": "পরিমাণ",
     "charge": "চার্জ",
     "cost": "খরচ",

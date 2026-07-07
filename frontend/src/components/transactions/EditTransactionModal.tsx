@@ -30,6 +30,7 @@ export function EditTransactionModal({
   });
 
   const [serviceId, setServiceId] = useState(transaction.service_id);
+  const [customerName, setCustomerName] = useState(transaction.customer_name ?? '');
   const [quantity, setQuantity] = useState(String(transaction.quantity));
   const [charge, setCharge] = useState(String(transaction.customer_charge));
   const [cost, setCost] = useState(String(transaction.cost_paid));
@@ -39,6 +40,7 @@ export function EditTransactionModal({
     mutationFn: () =>
       updateTransaction(transaction.id, {
         service_id: serviceId,
+        customer_name: customerName.trim() || undefined,
         customer_charge: Number(charge || 0),
         cost_paid: Number(cost || 0),
         quantity: Number(quantity || 1),
@@ -73,6 +75,17 @@ export function EditTransactionModal({
             </option>
           ))}
         </select>
+
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+          {t("customerName")}
+        </label>
+        <input
+          type="text"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+          placeholder={t("customerNamePlaceholder")}
+          className="mb-4 w-full rounded-xl border border-border-soft bg-white px-3.5 py-3 text-base font-medium text-ink-900 outline-none"
+        />
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t("quantity")}

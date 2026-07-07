@@ -29,6 +29,7 @@ export function AddTransactionPage() {
   });
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [customerName, setCustomerName] = useState('');
   const [quantity, setQuantity] = useState('1');
   const [charge, setCharge] = useState('');
   const [cost, setCost] = useState('');
@@ -65,6 +66,7 @@ export function AddTransactionPage() {
     if (!selectedService) return;
     mutation.mutate({
       service_id: selectedService.id,
+      customer_name: customerName.trim() || undefined,
       customer_charge: Number(charge || 0),
       cost_paid: Number(cost || 0),
       quantity: Number(quantity || 1),
@@ -110,6 +112,17 @@ export function AddTransactionPage() {
         <p className="mb-4 text-xs text-ink-600">
           {selectedService ? serviceName(selectedService, i18n.language) : t('selectPrompt')}
         </p>
+
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+          {t('customerName')}
+        </label>
+        <input
+          type="text"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+          placeholder={t('customerNamePlaceholder')}
+          className="mb-4 w-full rounded-xl border border-border-soft bg-white px-3.5 py-3 text-base font-medium text-ink-900 outline-none"
+        />
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('quantity')}</label>
         <div className="mb-4 flex items-center gap-2">

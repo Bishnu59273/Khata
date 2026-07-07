@@ -7,6 +7,8 @@
   "selectService": "सेवा चुनें",
   "entryDetails": "प्रविष्टि विवरण",
   "selectPrompt": "शुरू करने के लिए एक सेवा चुनें",
+  "customerName": "ग्राहक का नाम",
+  "customerNamePlaceholder": "वैकल्पिक",
   "quantity": "मात्रा",
   "customerCharge": "ग्राहक शुल्क",
   "costPaid": "पोर्टल लागत",

@@ -7,6 +7,8 @@
   "selectService": "একটি সেবা বেছে নিন",
   "entryDetails": "এন্ট্রির বিবরণ",
   "selectPrompt": "শুরু করতে একটি সেবা নির্বাচন করুন",
+  "customerName": "গ্রাহকের নাম",
+  "customerNamePlaceholder": "ঐচ্ছিক",
   "quantity": "পরিমাণ",
   "customerCharge": "গ্রাহক চার্জ",
   "costPaid": "পোর্টাল খরচ",
