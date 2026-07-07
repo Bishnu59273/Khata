@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Check } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
 import { getActiveServices } from '../api/services';
 import { createTransaction } from '../api/transactions';
 import { ServicePresetCard } from '../components/transactions/ServicePresetCard';
 import { PaymentModeToggle } from '../components/transactions/PaymentModeToggle';
+import { ServiceFormModal } from '../components/services/ServiceFormModal';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
 import type { PaymentMode, Service } from '../types/models';
@@ -32,6 +33,7 @@ export function AddTransactionPage() {
   const [charge, setCharge] = useState('');
   const [cost, setCost] = useState('');
   const [mode, setMode] = useState<PaymentMode>('cash');
+  const [showAddService, setShowAddService] = useState(false);
 
   const selectedService = services?.find((s) => s.id === selectedId) ?? null;
 
@@ -79,7 +81,17 @@ export function AddTransactionPage() {
   return (
     <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.4fr_1fr]">
       <div>
-        <h2 className="mb-3 text-base font-bold text-ink-900">{t('selectService')}</h2>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-base font-bold text-ink-900">{t('selectService')}</h2>
+          <button
+            type="button"
+            onClick={() => setShowAddService(true)}
+            className="flex items-center gap-1.5 rounded-xl border border-border-soft bg-white px-3 py-2 text-sm font-bold text-brand-600 hover:bg-brand-50"
+          >
+            <Plus size={16} />
+            {t('addService', { ns: 'services' })}
+          </button>
+        </div>
         <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
           {(services ?? []).map((service) => (
             <ServicePresetCard
@@ -179,6 +191,10 @@ export function AddTransactionPage() {
           {t('save')}
         </button>
       </div>
+
+      {showAddService && (
+        <ServiceFormModal service={null} onClose={() => setShowAddService(false)} />
+      )}
     </div>
   );
 }
