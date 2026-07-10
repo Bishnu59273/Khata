@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Check, Plus } from 'lucide-react';
+import { Check, Plus, Search } from 'lucide-react';
 import { getActiveServices } from '../api/services';
 import { createTransaction } from '../api/transactions';
 import { ServicePresetCard } from '../components/transactions/ServicePresetCard';
@@ -29,6 +29,7 @@ export function AddTransactionPage() {
   });
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [serviceQuery, setServiceQuery] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [quantity, setQuantity] = useState('1');
   const [charge, setCharge] = useState('');
@@ -37,6 +38,9 @@ export function AddTransactionPage() {
   const [showAddService, setShowAddService] = useState(false);
 
   const selectedService = services?.find((s) => s.id === selectedId) ?? null;
+  const filteredServices = (services ?? []).filter((service) =>
+    serviceName(service, i18n.language).toLowerCase().includes(serviceQuery.trim().toLowerCase())
+  );
 
   const mutation = useMutation({
     mutationFn: createTransaction,
@@ -94,17 +98,31 @@ export function AddTransactionPage() {
             {t('addService', { ns: 'services' })}
           </button>
         </div>
-        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-          {(services ?? []).map((service) => (
-            <ServicePresetCard
-              key={service.id}
-              service={service}
-              name={serviceName(service, i18n.language)}
-              selected={service.id === selectedId}
-              onClick={() => pickService(service)}
-            />
-          ))}
+        <div className="relative mb-3.5">
+          <Search size={18} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-600" />
+          <input
+            type="text"
+            value={serviceQuery}
+            onChange={(e) => setServiceQuery(e.target.value)}
+            placeholder={t('searchServicePlaceholder')}
+            className="w-full rounded-xl border border-border-soft bg-white py-3 pl-10 pr-3.5 text-base font-medium text-ink-900 outline-none"
+          />
         </div>
+        {filteredServices.length === 0 ? (
+          <p className="text-sm text-ink-600">{t('noServicesFound')}</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+            {filteredServices.map((service) => (
+              <ServicePresetCard
+                key={service.id}
+                service={service}
+                name={serviceName(service, i18n.language)}
+                selected={service.id === selectedId}
+                onClick={() => pickService(service)}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="rounded-2xl border border-border-soft bg-surface p-6">

@@ -5,6 +5,8 @@
   "deleteTransaction": "Delete transaction",
   "deleteConfirmMessage": "Delete the {{service}} entry for ₹{{amount}}? This can't be undone.",
   "selectService": "Pick a service",
+  "searchServicePlaceholder": "Search services",
+  "noServicesFound": "No services match your search.",
   "entryDetails": "Entry Details",
   "selectPrompt": "Select a service to begin",
   "customerName": "Customer Name",

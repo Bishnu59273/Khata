@@ -5,6 +5,8 @@
   "deleteTransaction": "लेनदेन हटाएं",
   "deleteConfirmMessage": "{{service}} की ₹{{amount}} वाली प्रविष्टि हटाएं? इसे वापस नहीं लाया जा सकता।",
   "selectService": "सेवा चुनें",
+  "searchServicePlaceholder": "सेवाएं खोजें",
+  "noServicesFound": "आपकी खोज से कोई सेवा मेल नहीं खाती।",
   "entryDetails": "प्रविष्टि विवरण",
   "selectPrompt": "शुरू करने के लिए एक सेवा चुनें",
   "customerName": "ग्राहक का नाम",
