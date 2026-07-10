@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Check } from "lucide-react";
+import { toast } from "sonner";
 import { updateShop } from "../api/shops";
 import { AUTH_QUERY_KEY, useAuth } from "../context/AuthContext";
 
@@ -29,6 +30,7 @@ export function SettingsPage() {
       queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY });
 
       setButtonState("saved");
+      toast.success(t("toast.saved"));
 
       setTimeout(() => {
         setButtonState("idle");
@@ -37,6 +39,7 @@ export function SettingsPage() {
 
     onError: () => {
       setButtonState("idle");
+      toast.error(t("toast.error"));
     },
   });
 

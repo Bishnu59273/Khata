@@ -34,6 +34,13 @@
     "loading": "লোড হচ্ছে...",
     "error": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।"
   },
+  "validation": {
+    "chargePositive": "চার্জ ০-এর বেশি হতে হবে",
+    "amountPositive": "পরিমাণ ০-এর বেশি হতে হবে",
+    "nameRequired": "নাম আবশ্যক",
+    "descriptionRequired": "বিবরণ আবশ্যক",
+    "negativeProfitWarning": "খরচ চার্জের চেয়ে বেশি — এই এন্ট্রিতে লোকসান হিসাব হবে"
+  },
   "notFound": {
     "title": "পৃষ্ঠা পাওয়া যায়নি",
     "message": "আপনি যে পৃষ্ঠাটি খুঁজছেন তা নেই।"

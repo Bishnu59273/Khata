@@ -34,6 +34,13 @@
     "loading": "Loading...",
     "error": "Something went wrong. Please try again."
   },
+  "validation": {
+    "chargePositive": "Charge must be greater than 0",
+    "amountPositive": "Amount must be greater than 0",
+    "nameRequired": "Name is required",
+    "descriptionRequired": "Description is required",
+    "negativeProfitWarning": "Cost is higher than charge — this entry will record a loss"
+  },
   "notFound": {
     "title": "Page not found",
     "message": "The page you're looking for doesn't exist."

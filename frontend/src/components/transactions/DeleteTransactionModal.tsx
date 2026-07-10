@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -11,6 +12,7 @@ import {
   AlertDialogCancel,
 } from "../ui/alert-dialog";
 import { deleteTransaction } from "../../api/transactions";
+import { formatINRNumber } from "../../utils/currency";
 import type { Transaction } from "../../types/models";
 
 function serviceName(transaction: Transaction, lang: string): string {
@@ -35,7 +37,11 @@ export function DeleteTransactionModal({
     mutationFn: () => deleteTransaction(transaction.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      toast.success(t("toast.deleted"));
       onClose();
+    },
+    onError: () => {
+      toast.error(t("toast.deleteError"));
     },
   });
 
@@ -47,7 +53,7 @@ export function DeleteTransactionModal({
           <AlertDialogDescription>
             {t("deleteConfirmMessage", {
               service: serviceName(transaction, i18n.language),
-              amount: `${transaction.customer_charge.toFixed(2)}`,
+              amount: formatINRNumber(transaction.customer_charge),
             })}
           </AlertDialogDescription>
         </AlertDialogHeader>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../ui/dialog';
 import {
   AlertDialog,
@@ -33,6 +34,7 @@ export function EditExpenseModal({
   const [category, setCategory] = useState(expense.category);
   const [amount, setAmount] = useState(String(expense.amount));
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [attempted, setAttempted] = useState(false);
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['expenses'] });
 
@@ -45,7 +47,11 @@ export function EditExpenseModal({
       }),
     onSuccess: () => {
       invalidate();
+      toast.success(t('toast.updated'));
       onClose();
+    },
+    onError: () => {
+      toast.error(t('toast.error'));
     },
   });
 
@@ -53,11 +59,24 @@ export function EditExpenseModal({
     mutationFn: () => deleteExpense(expense.id),
     onSuccess: () => {
       invalidate();
+      toast.success(t('toast.deleted'));
       onClose();
+    },
+    onError: () => {
+      toast.error(t('toast.error'));
     },
   });
 
-  const canSave = !!description.trim() && amount !== '' && !saveMutation.isPending;
+  const descriptionMissing = !description.trim();
+  const amountInvalid = !(Number(amount) > 0);
+  const showDescriptionError = attempted && descriptionMissing;
+  const showAmountError = attempted && amountInvalid;
+
+  function handleSave() {
+    setAttempted(true);
+    if (descriptionMissing || amountInvalid) return;
+    saveMutation.mutate();
+  }
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
@@ -70,8 +89,15 @@ export function EditExpenseModal({
         <input
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="mb-3 w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
+          className={`w-full rounded-xl border bg-white px-3.5 py-2.5 text-base font-medium text-ink-900 ${
+            showDescriptionError ? 'mb-1.5 border-danger-600' : 'mb-3 border-border-soft'
+          }`}
         />
+        {showDescriptionError && (
+          <p className="mb-3 text-sm font-semibold text-danger-600">
+            {t('validation.descriptionRequired', { ns: 'common' })}
+          </p>
+        )}
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('form.category')}</label>
         <select
@@ -87,7 +113,11 @@ export function EditExpenseModal({
         </select>
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('form.amount')}</label>
-        <div className="mb-5 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
+        <div
+          className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
+            showAmountError ? 'mb-1.5 border-danger-600' : 'mb-5 border-border-soft'
+          }`}
+        >
           <span className="text-lg font-bold text-ink-600">₹</span>
           <input
             type="number"
@@ -96,6 +126,11 @@ export function EditExpenseModal({
             className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
           />
         </div>
+        {showAmountError && (
+          <p className="mb-5 text-sm font-semibold text-danger-600">
+            {t('validation.amountPositive', { ns: 'common' })}
+          </p>
+        )}
 
         <DialogFooter>
           <Button
@@ -111,8 +146,8 @@ export function EditExpenseModal({
           <Button
             type="button"
             size="lg"
-            onClick={() => saveMutation.mutate()}
-            disabled={!canSave}
+            onClick={handleSave}
+            disabled={saveMutation.isPending}
           >
             {t('actions.save', { ns: 'common' })}
           </Button>

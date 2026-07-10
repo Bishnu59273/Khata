@@ -4,9 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
 import { getAllServices } from '../api/services';
 import { ServiceFormModal } from '../components/services/ServiceFormModal';
-import { LoadingState } from '../components/common/LoadingState';
+import { CardGridSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
+import { formatINRWhole } from '../utils/currency';
 import type { Service } from '../types/models';
 
 export function ServicesPage() {
@@ -38,7 +39,7 @@ export function ServicesPage() {
         </button>
       </div>
 
-      {status === 'pending' && <LoadingState />}
+      {status === 'pending' && <CardGridSkeleton />}
       {status === 'error' && (
         <ErrorState message={error instanceof Error ? error.message : undefined} />
       )}
@@ -74,7 +75,7 @@ export function ServicesPage() {
                       )}
                     </div>
                     <div className="mt-0.5 text-xs text-ink-600">
-                      ₹{service.default_charge.toFixed(0)} · +₹{profit.toFixed(0)}
+                      {formatINRWhole(service.default_charge)} · +{formatINRWhole(profit)}
                     </div>
                   </div>
                 </button>

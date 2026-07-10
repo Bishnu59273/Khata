@@ -7,9 +7,10 @@ import { aggregateTransactions } from '../utils/aggregateTransactions';
 import { ProfitHighlight } from '../components/dashboard/ProfitHighlight';
 import { StatCard } from '../components/dashboard/StatCard';
 import { TransactionsTable } from '../components/transactions/TransactionsTable';
-import { LoadingState } from '../components/common/LoadingState';
+import { StatCardsSkeleton, TableSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
+import { formatINR } from '../utils/currency';
 
 export function DashboardPage() {
   const { t } = useTranslation('dashboard');
@@ -25,7 +26,12 @@ export function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      {status === 'pending' && <LoadingState />}
+      {status === 'pending' && (
+        <>
+          <StatCardsSkeleton />
+          <TableSkeleton />
+        </>
+      )}
       {status === 'error' && (
         <ErrorState message={error instanceof Error ? error.message : undefined} />
       )}
@@ -44,10 +50,10 @@ export function DashboardPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <StatCard label={t('totalCollected')} value={`₹${aggregates.totalCollected.toFixed(2)}`} />
+            <StatCard label={t('totalCollected')} value={formatINR(aggregates.totalCollected)} />
             <StatCard
               label={t('totalCost')}
-              value={`₹${aggregates.totalCost.toFixed(2)}`}
+              value={formatINR(aggregates.totalCost)}
               tone="cost"
             />
             <StatCard label={t('transactionCount')} value={String(aggregates.count)} />

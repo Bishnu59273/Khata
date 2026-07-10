@@ -23,5 +23,12 @@
     "cash": "Cash",
     "upi": "UPI",
     "online": "Online"
+  },
+  "toast": {
+    "created": "Transaction saved",
+    "updated": "Transaction updated",
+    "deleted": "Transaction deleted",
+    "saveError": "Could not save the transaction. Please try again.",
+    "deleteError": "Could not delete the transaction. Please try again."
   }
 }

@@ -3,10 +3,12 @@ import type { FormEvent } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
+import { toast } from 'sonner';
 import { getExpenses, createExpense } from '../api/expenses';
 import { getPresetRange } from '../utils/dateRanges';
+import { formatINR } from '../utils/currency';
 import { StatCard } from '../components/dashboard/StatCard';
-import { LoadingState } from '../components/common/LoadingState';
+import { TableSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
 import { EditExpenseModal } from '../components/expenses/EditExpenseModal';
@@ -23,6 +25,7 @@ export function ExpensesPage() {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<string>('fixed');
   const [amount, setAmount] = useState('');
+  const [attempted, setAttempted] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
 
   const monthRange = getPresetRange('month');
@@ -35,16 +38,25 @@ export function ExpensesPage() {
     mutationFn: createExpense,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['expenses'] });
+      toast.success(t('toast.created'));
       setDescription('');
       setAmount('');
       setCategory('fixed');
+      setAttempted(false);
       setShowForm(false);
+    },
+    onError: () => {
+      toast.error(t('toast.error'));
     },
   });
 
+  const amountInvalid = !(Number(amount) > 0);
+  const showAmountError = attempted && amountInvalid;
+
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!description.trim() || !amount) return;
+    setAttempted(true);
+    if (!description.trim() || amountInvalid) return;
     mutation.mutate({ description: description.trim(), category, amount: Number(amount) });
   }
 
@@ -53,7 +65,7 @@ export function ExpensesPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <StatCard label={t('totalThisMonth')} value={`₹${total.toFixed(2)}`} tone="cost" />
+        <StatCard label={t('totalThisMonth')} value={formatINR(total)} tone="cost" />
         <button
           type="button"
           onClick={() => setShowForm((v) => !v)}
@@ -99,9 +111,16 @@ export function ExpensesPage() {
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
+              className={`rounded-xl border bg-white px-3.5 py-2.5 text-base font-medium text-ink-900 ${
+                showAmountError ? 'border-danger-600' : 'border-border-soft'
+              }`}
               required
             />
+            {showAmountError && (
+              <span className="text-sm font-semibold text-danger-600">
+                {t('validation.amountPositive', { ns: 'common' })}
+              </span>
+            )}
           </label>
           <button
             type="submit"
@@ -113,7 +132,7 @@ export function ExpensesPage() {
         </form>
       )}
 
-      {status === 'pending' && <LoadingState />}
+      {status === 'pending' && <TableSkeleton />}
       {status === 'error' && (
         <ErrorState message={error instanceof Error ? error.message : undefined} />
       )}
@@ -153,7 +172,7 @@ export function ExpensesPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right font-bold text-ink-900">
-                      ₹{expense.amount.toFixed(2)}
+                      {formatINR(expense.amount)}
                     </td>
                     <td className="px-5 py-3 text-right text-ink-600">
                       {new Date(expense.created_at).toLocaleDateString(localeForLang(i18n.language), {

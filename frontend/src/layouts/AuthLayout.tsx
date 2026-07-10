@@ -1,6 +1,7 @@
 import { Home } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router';
+import { AppToaster } from '../components/common/AppToaster';
 
 export function AuthLayout() {
   const { t } = useTranslation('common');
@@ -18,6 +19,7 @@ export function AuthLayout() {
           <Outlet />
         </div>
       </div>
+      <AppToaster />
     </div>
   );
 }

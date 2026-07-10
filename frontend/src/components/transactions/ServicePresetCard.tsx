@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { formatINRWhole } from '../../utils/currency';
 import type { Service } from '../../types/models';
 
 interface ServicePresetCardProps {
@@ -32,7 +33,7 @@ export function ServicePresetCard({ service, name, selected, onClick }: ServiceP
       <div className="min-w-0">
         <div className="truncate text-[15px] font-bold leading-tight text-ink-900">{name}</div>
         <div className="mt-0.5 text-xs text-ink-600">
-          ₹{service.default_charge.toFixed(0)} · {t('profitShort')} ₹{profit.toFixed(0)}
+          {formatINRWhole(service.default_charge)} · {t('profitShort')} {formatINRWhole(profit)}
         </div>
       </div>
     </button>

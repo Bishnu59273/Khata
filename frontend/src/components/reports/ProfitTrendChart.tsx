@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { Transaction } from '../../types/models';
 import { istDateKey, last7DayKeys } from '../../utils/dateRanges';
 import { localeForLang } from '../../utils/formatDate';
+import { formatINRWhole } from '../../utils/currency';
 
 export function ProfitTrendChart({ transactions }: { transactions: Transaction[] }) {
   const { t, i18n } = useTranslation('reports');
@@ -27,7 +28,7 @@ export function ProfitTrendChart({ transactions }: { transactions: Transaction[]
       <div className="flex h-[150px] items-end gap-3.5">
         {bars.map((bar) => (
           <div key={bar.key} className="flex h-full flex-1 flex-col items-center justify-end gap-2">
-            <div className="text-xs font-semibold text-[#4d7a5e]">₹{bar.value.toFixed(0)}</div>
+            <div className="text-xs font-semibold text-[#4d7a5e]">{formatINRWhole(bar.value)}</div>
             <div
               className="w-full max-w-[38px] rounded-t-md bg-gradient-to-b from-brand-500 to-brand-600"
               style={{ height: `${Math.max(0, Math.round((bar.value / maxValue) * 110))}px` }}

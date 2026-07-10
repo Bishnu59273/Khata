@@ -10,9 +10,10 @@ import { TransactionsTable } from '../components/transactions/TransactionsTable'
 import { EditTransactionModal } from '../components/transactions/EditTransactionModal';
 import { DeleteTransactionModal } from '../components/transactions/DeleteTransactionModal';
 import { ProfitTrendChart } from '../components/reports/ProfitTrendChart';
-import { LoadingState } from '../components/common/LoadingState';
+import { StatCardsSkeleton, TableSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
+import { formatINR } from '../utils/currency';
 import type { Transaction } from '../types/models';
 
 const RANGE_KEYS: ReportRangePreset[] = ['today', 'week', 'month', 'custom'];
@@ -80,7 +81,12 @@ export function ReportsPage() {
         </div>
       )}
 
-      {status === 'pending' && <LoadingState />}
+      {status === 'pending' && (
+        <>
+          <StatCardsSkeleton />
+          <TableSkeleton />
+        </>
+      )}
       {status === 'error' && (
         <ErrorState message={error instanceof Error ? error.message : undefined} />
       )}
@@ -90,16 +96,16 @@ export function ReportsPage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <StatCard
               label={t('totalCollected', { ns: 'dashboard' })}
-              value={`₹${aggregates.totalCollected.toFixed(2)}`}
+              value={formatINR(aggregates.totalCollected)}
             />
             <StatCard
               label={t('totalCost', { ns: 'dashboard' })}
-              value={`₹${aggregates.totalCost.toFixed(2)}`}
+              value={formatINR(aggregates.totalCost)}
               tone="cost"
             />
             <StatCard
               label={t('table.profit', { ns: 'dashboard' })}
-              value={`₹${aggregates.totalProfit.toFixed(2)}`}
+              value={formatINR(aggregates.totalProfit)}
             />
           </div>
 

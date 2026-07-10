@@ -5,5 +5,9 @@
   "phone": "Phone Number",
   "gstin": "GSTIN",
   "optional": "Optional",
-  "save": "Save Changes"
+  "save": "Save Changes",
+  "toast": {
+    "saved": "Shop details saved",
+    "error": "Could not save the changes. Please try again."
+  }
 }

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { Shop } from '../../types/auth';
 import type { Transaction } from '../../types/models';
 import { serviceName, formatBillDate } from './billHelpers';
+import { formatINR } from '../../utils/currency';
 
 export function BillInvoiceTemplate({
   shop,
@@ -52,7 +53,7 @@ export function BillInvoiceTemplate({
               <td className="py-2 text-right">×{tx.quantity}</td>
               <td className="py-2">{t(`paymentMode.${tx.payment_mode}`, { ns: 'transactions' })}</td>
               <td className="py-2 text-right">{formatBillDate(tx.created_at, i18n.language)}</td>
-              <td className="py-2 text-right">₹{tx.customer_charge.toFixed(2)}</td>
+              <td className="py-2 text-right">{formatINR(tx.customer_charge)}</td>
             </tr>
           ))}
         </tbody>
@@ -61,7 +62,7 @@ export function BillInvoiceTemplate({
       <div className="mt-4 flex justify-end">
         <div className="flex w-56 items-center justify-between border-t border-black pt-2 text-base font-bold">
           <div>{t('grandTotal')}</div>
-          <div>₹{grandTotal.toFixed(2)}</div>
+          <div>{formatINR(grandTotal)}</div>
         </div>
       </div>
 

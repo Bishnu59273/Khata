@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown } from 'lucide-react';
+import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { EmojiPicker } from '../ui/emoji-picker';
@@ -27,6 +28,7 @@ export function ServiceFormModal({
   );
   const [charge, setCharge] = useState(String(service?.default_charge ?? ''));
   const [cost, setCost] = useState(String(service?.default_cost ?? ''));
+  const [attempted, setAttempted] = useState(false);
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ['services'] });
 
@@ -44,7 +46,11 @@ export function ServiceFormModal({
     },
     onSuccess: () => {
       invalidate();
+      toast.success(service ? t('toast.updated') : t('toast.created'));
       onClose();
+    },
+    onError: () => {
+      toast.error(t('toast.error'));
     },
   });
 
@@ -52,11 +58,24 @@ export function ServiceFormModal({
     mutationFn: () => updateService(service!.id, { is_active: !service!.is_active }),
     onSuccess: () => {
       invalidate();
+      toast.success(t('toast.updated'));
       onClose();
+    },
+    onError: () => {
+      toast.error(t('toast.error'));
     },
   });
 
-  const canSave = !!nameEn.trim() && charge !== '' && !saveMutation.isPending;
+  const nameMissing = !nameEn.trim();
+  const chargeMissing = charge === '';
+  const showNameError = attempted && nameMissing;
+  const showChargeError = attempted && chargeMissing;
+
+  function handleSave() {
+    setAttempted(true);
+    if (nameMissing || chargeMissing) return;
+    saveMutation.mutate();
+  }
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
@@ -75,9 +94,16 @@ export function ServiceFormModal({
             <input
               value={nameEn}
               onChange={(e) => setNameEn(e.target.value)}
-              className="w-full rounded-xl border border-border-soft bg-white px-3.5 py-2.5 text-base font-medium text-ink-900"
+              className={`w-full rounded-xl border bg-white px-3.5 py-2.5 text-base font-medium text-ink-900 ${
+                showNameError ? 'border-danger-600' : 'border-border-soft'
+              }`}
               autoFocus
             />
+            {showNameError && (
+              <p className="mt-1.5 text-sm font-semibold text-danger-600">
+                {t('validation.nameRequired', { ns: 'common' })}
+              </p>
+            )}
           </div>
         </div>
 
@@ -116,7 +142,11 @@ export function ServiceFormModal({
         <div className="mt-4 mb-4 grid grid-cols-2 gap-3">
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('defaultCharge')}</label>
-            <div className="flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
+            <div
+              className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
+                showChargeError ? 'border-danger-600' : 'border-border-soft'
+              }`}
+            >
               <span className="text-ink-600">₹</span>
               <input
                 type="number"
@@ -125,6 +155,11 @@ export function ServiceFormModal({
                 className="w-full bg-transparent py-2.5 text-base font-bold text-ink-900 outline-none"
               />
             </div>
+            {showChargeError && (
+              <p className="mt-1.5 text-sm font-semibold text-danger-600">
+                {t('validation.amountPositive', { ns: 'common' })}
+              </p>
+            )}
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('defaultCost')}</label>
@@ -153,7 +188,7 @@ export function ServiceFormModal({
               {service.is_active ? t('deactivate') : t('reactivate')}
             </Button>
           )}
-          <Button type="button" size="lg" onClick={() => saveMutation.mutate()} disabled={!canSave}>
+          <Button type="button" size="lg" onClick={handleSave} disabled={saveMutation.isPending}>
             {t('actions.save', { ns: 'common' })}
           </Button>
         </DialogFooter>

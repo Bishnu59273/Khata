@@ -7,7 +7,7 @@ import { getTransactionsPaged } from '../api/transactions';
 import { TransactionsTable } from '../components/transactions/TransactionsTable';
 import { EditTransactionModal } from '../components/transactions/EditTransactionModal';
 import { DeleteTransactionModal } from '../components/transactions/DeleteTransactionModal';
-import { LoadingState } from '../components/common/LoadingState';
+import { TableSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
 import { Pagination } from '../components/common/Pagination';
@@ -72,7 +72,7 @@ export function TransactionsPage() {
         </button>
       </div>
 
-      {status === 'pending' && <LoadingState />}
+      {status === 'pending' && <TableSkeleton rows={10} />}
       {status === 'error' && (
         <ErrorState message={error instanceof Error ? error.message : undefined} />
       )}

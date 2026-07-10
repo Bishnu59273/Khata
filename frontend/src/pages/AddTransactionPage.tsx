@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Check, Plus, Search } from 'lucide-react';
+import { Check, Plus, Search, TriangleAlert } from 'lucide-react';
+import { toast } from 'sonner';
 import { getActiveServices } from '../api/services';
 import { createTransaction } from '../api/transactions';
 import { ServicePresetCard } from '../components/transactions/ServicePresetCard';
 import { PaymentModeToggle } from '../components/transactions/PaymentModeToggle';
 import { ServiceFormModal } from '../components/services/ServiceFormModal';
-import { LoadingState } from '../components/common/LoadingState';
+import { CardGridSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
+import { formatINR } from '../utils/currency';
 import type { PaymentMode, Service } from '../types/models';
 
 function serviceName(service: Service, lang: string): string {
@@ -34,6 +36,9 @@ export function AddTransactionPage() {
   const [quantity, setQuantity] = useState('1');
   const [charge, setCharge] = useState('');
   const [cost, setCost] = useState('');
+  const [chargeEdited, setChargeEdited] = useState(false);
+  const [costEdited, setCostEdited] = useState(false);
+  const [attempted, setAttempted] = useState(false);
   const [mode, setMode] = useState<PaymentMode>('cash');
   const [showAddService, setShowAddService] = useState(false);
 
@@ -46,7 +51,11 @@ export function AddTransactionPage() {
     mutationFn: createTransaction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      toast.success(t('toast.created'));
       navigate('/dashboard');
+    },
+    onError: () => {
+      toast.error(t('toast.saveError'));
     },
   });
 
@@ -55,33 +64,44 @@ export function AddTransactionPage() {
     setQuantity('1');
     setCharge(String(service.default_charge));
     setCost(String(service.default_cost));
+    setChargeEdited(false);
+    setCostEdited(false);
+    setAttempted(false);
   }
 
   function applyQuantity(nextQuantity: number) {
     const qty = Math.max(1, nextQuantity);
     setQuantity(String(qty));
     if (selectedService) {
-      setCharge(String(selectedService.default_charge * qty));
-      setCost(String(selectedService.default_cost * qty));
+      if (!chargeEdited) setCharge(String(selectedService.default_charge * qty));
+      if (!costEdited) setCost(String(selectedService.default_cost * qty));
     }
   }
 
+  const chargeNum = Number(charge || 0);
+  const costNum = Number(cost || 0);
+  const chargeInvalid = !(chargeNum > 0);
+  const showChargeError = attempted && chargeInvalid;
+  const showLossWarning = !chargeInvalid && costNum > chargeNum;
+
   function handleSave() {
     if (!selectedService) return;
+    setAttempted(true);
+    if (chargeInvalid) return;
     mutation.mutate({
       service_id: selectedService.id,
       customer_name: customerName.trim() || undefined,
-      customer_charge: Number(charge || 0),
-      cost_paid: Number(cost || 0),
+      customer_charge: chargeNum,
+      cost_paid: costNum,
       quantity: Number(quantity || 1),
       payment_mode: mode,
     });
   }
 
-  if (status === 'pending') return <LoadingState />;
+  if (status === 'pending') return <CardGridSkeleton count={6} columnsClass="sm:grid-cols-2" />;
   if (status === 'error') return <ErrorState />;
 
-  const liveProfit = Number(charge || 0) - Number(cost || 0);
+  const liveProfit = chargeNum - costNum;
   const canSave = !!selectedService && !mutation.isPending;
 
   return (
@@ -173,16 +193,28 @@ export function AddTransactionPage() {
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t('customerCharge')}
         </label>
-        <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
+        <div
+          className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
+            showChargeError ? 'border-danger-600' : 'border-border-soft'
+          } ${showChargeError ? 'mb-1.5' : 'mb-4'}`}
+        >
           <span className="text-lg font-bold text-ink-600">₹</span>
           <input
             type="number"
             value={charge}
-            onChange={(e) => setCharge(e.target.value)}
+            onChange={(e) => {
+              setCharge(e.target.value);
+              setChargeEdited(true);
+            }}
             placeholder="0"
             className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
           />
         </div>
+        {showChargeError && (
+          <p className="mb-4 text-sm font-semibold text-danger-600">
+            {t('validation.chargePositive', { ns: 'common' })}
+          </p>
+        )}
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('costPaid')}</label>
         <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
@@ -190,15 +222,25 @@ export function AddTransactionPage() {
           <input
             type="number"
             value={cost}
-            onChange={(e) => setCost(e.target.value)}
+            onChange={(e) => {
+              setCost(e.target.value);
+              setCostEdited(true);
+            }}
             placeholder="0"
             className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
           />
         </div>
 
+        {showLossWarning && (
+          <div className="mb-4 flex items-start gap-2 rounded-xl border border-cost-600/30 bg-cost-600/[8%] px-3.5 py-2.5 text-sm font-semibold text-cost-600">
+            <TriangleAlert size={16} className="mt-0.5 shrink-0" />
+            {t('validation.negativeProfitWarning', { ns: 'common' })}
+          </div>
+        )}
+
         <div className="mb-4 flex items-center justify-between rounded-xl border border-success-border bg-success-bg px-4 py-3">
           <span className="text-sm font-semibold text-[#4d7a5e]">{t('table.profit', { ns: 'dashboard' })}</span>
-          <span className="text-2xl font-bold text-success-600">₹{liveProfit.toFixed(2)}</span>
+          <span className="text-2xl font-bold text-success-600">{formatINR(liveProfit)}</span>
         </div>
 
         <label className="mb-2 block text-sm font-semibold text-ink-700">

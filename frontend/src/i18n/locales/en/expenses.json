@@ -20,5 +20,11 @@
     "category": "Category",
     "amount": "Amount"
   },
-  "empty": "No expenses recorded yet."
+  "empty": "No expenses recorded yet.",
+  "toast": {
+    "created": "Expense added",
+    "updated": "Expense updated",
+    "deleted": "Expense deleted",
+    "error": "Could not save the expense. Please try again."
+  }
 }

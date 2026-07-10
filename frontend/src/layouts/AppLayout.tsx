@@ -2,6 +2,7 @@ import { Outlet } from 'react-router';
 import { SidebarProvider, SidebarInset } from '@/components/animate-ui/components/radix/sidebar';
 import { Sidebar } from '../components/layout/Sidebar';
 import { Header } from '../components/layout/Header';
+import { AppToaster } from '../components/common/AppToaster';
 
 export function AppLayout() {
   return (
@@ -13,6 +14,7 @@ export function AppLayout() {
           <Outlet />
         </div>
       </SidebarInset>
+      <AppToaster />
     </SidebarProvider>
   );
 }

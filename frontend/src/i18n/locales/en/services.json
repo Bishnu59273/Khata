@@ -18,5 +18,10 @@
   "inactive": "Inactive",
   "deactivate": "Deactivate",
   "reactivate": "Reactivate",
-  "empty": "No services yet."
+  "empty": "No services yet.",
+  "toast": {
+    "created": "Service added",
+    "updated": "Service updated",
+    "error": "Could not save the service. Please try again."
+  }
 }
