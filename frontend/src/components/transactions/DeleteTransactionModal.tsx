@@ -37,6 +37,7 @@ export function DeleteTransactionModal({
     mutationFn: () => deleteTransaction(transaction.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
       toast.success(t("toast.deleted"));
       onClose();
     },

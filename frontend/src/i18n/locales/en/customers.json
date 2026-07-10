@@ -1,0 +1,52 @@
+{
+  "title": "Customers",
+  "addCustomer": "Add Customer",
+  "editCustomer": "Edit Customer",
+  "name": "Name",
+  "phone": "Phone Number",
+  "notes": "Notes",
+  "optional": "Optional",
+  "searchPlaceholder": "Search by name or phone",
+  "totalDues": "Total dues",
+  "settled": "Settled",
+  "due": "Due",
+  "empty": "No customers yet.",
+  "recordPayment": "Record Payment",
+  "paymentAmount": "Amount received",
+  "paymentNote": "Note",
+  "statement": "Khata Statement",
+  "statementEmpty": "No udhaar entries yet.",
+  "paymentReceived": "Payment received",
+  "totalUdhaar": "Total udhaar",
+  "totalPaid": "Total paid",
+  "deleteCustomer": "Delete customer",
+  "deleteConfirmMessage": "Delete {{name}}? Their past transactions keep the name, but the khata record is removed.",
+  "table": {
+    "name": "Name",
+    "phone": "Phone",
+    "balance": "Balance"
+  },
+  "ledger": {
+    "date": "Date",
+    "detail": "Detail",
+    "udhaar": "Udhaar",
+    "paid": "Paid",
+    "balance": "Balance"
+  },
+  "quickCreate": "Save \"{{name}}\" as customer",
+  "udhaarNeedsCustomer": "Pick or save a customer for udhaar entries",
+  "paymentExceedsDue": "Amount is more than the outstanding due ({{amount}})",
+  "deletePayment": "Delete payment",
+  "deletePaymentConfirm": "Delete this payment of {{amount}}? The balance will go up again.",
+  "toast": {
+    "created": "Customer added",
+    "updated": "Customer updated",
+    "deleted": "Customer deleted",
+    "error": "Could not save the customer. Please try again.",
+    "hasBalance": "This customer has an outstanding balance and can't be deleted.",
+    "paymentRecorded": "Payment recorded",
+    "paymentError": "Could not record the payment. Please try again.",
+    "paymentDeleted": "Payment deleted",
+    "paymentDeleteError": "Could not delete the payment. Please try again."
+  }
+}

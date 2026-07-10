@@ -22,7 +22,8 @@
   "paymentMode": {
     "cash": "नगद",
     "upi": "यूपीआई",
-    "online": "ऑनलाइन"
+    "online": "ऑनलाइन",
+    "udhaar": "उधार"
   },
   "toast": {
     "created": "लेनदेन सहेजा गया",

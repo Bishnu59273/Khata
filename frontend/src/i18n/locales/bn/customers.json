@@ -1,0 +1,52 @@
+{
+  "title": "গ্রাহক",
+  "addCustomer": "গ্রাহক যোগ করুন",
+  "editCustomer": "গ্রাহক সম্পাদনা করুন",
+  "name": "নাম",
+  "phone": "ফোন নম্বর",
+  "notes": "নোট",
+  "optional": "ঐচ্ছিক",
+  "searchPlaceholder": "নাম বা ফোন দিয়ে খুঁজুন",
+  "totalDues": "মোট বাকি",
+  "settled": "পরিশোধিত",
+  "due": "বাকি",
+  "empty": "এখনও কোনো গ্রাহক নেই।",
+  "recordPayment": "পেমেন্ট লিখুন",
+  "paymentAmount": "প্রাপ্ত পরিমাণ",
+  "paymentNote": "নোট",
+  "statement": "খাতার বিবরণ",
+  "statementEmpty": "এখনও কোনো বাকির এন্ট্রি নেই।",
+  "paymentReceived": "পেমেন্ট পাওয়া গেছে",
+  "totalUdhaar": "মোট বাকি",
+  "totalPaid": "মোট জমা",
+  "deleteCustomer": "গ্রাহক মুছুন",
+  "deleteConfirmMessage": "{{name}}-কে মুছবেন? পুরনো লেনদেনে নাম থেকে যাবে, কিন্তু খাতার রেকর্ড মুছে যাবে।",
+  "table": {
+    "name": "নাম",
+    "phone": "ফোন",
+    "balance": "ব্যালেন্স"
+  },
+  "ledger": {
+    "date": "তারিখ",
+    "detail": "বিবরণ",
+    "udhaar": "বাকি",
+    "paid": "জমা",
+    "balance": "ব্যালেন্স"
+  },
+  "quickCreate": "\"{{name}}\" গ্রাহক হিসেবে সংরক্ষণ করুন",
+  "udhaarNeedsCustomer": "বাকির এন্ট্রির জন্য একজন গ্রাহক নির্বাচন বা সংরক্ষণ করুন",
+  "paymentExceedsDue": "পরিমাণ বাকির ({{amount}}) চেয়ে বেশি",
+  "deletePayment": "পেমেন্ট মুছুন",
+  "deletePaymentConfirm": "{{amount}}-এর এই পেমেন্টটি মুছবেন? বাকি আবার বেড়ে যাবে।",
+  "toast": {
+    "created": "গ্রাহক যোগ হয়েছে",
+    "updated": "গ্রাহক আপডেট হয়েছে",
+    "deleted": "গ্রাহক মুছে ফেলা হয়েছে",
+    "error": "গ্রাহক সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।",
+    "hasBalance": "এই গ্রাহকের বাকি রয়েছে, মুছে ফেলা যাবে না।",
+    "paymentRecorded": "পেমেন্ট লেখা হয়েছে",
+    "paymentError": "পেমেন্ট লেখা যায়নি। আবার চেষ্টা করুন।",
+    "paymentDeleted": "পেমেন্ট মুছে ফেলা হয়েছে",
+    "paymentDeleteError": "পেমেন্ট মোছা যায়নি। আবার চেষ্টা করুন।"
+  }
+}

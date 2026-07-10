@@ -11,6 +11,7 @@ import enServices from './locales/en/services.json';
 import enAuth from './locales/en/auth.json';
 import enSettings from './locales/en/settings.json';
 import enBills from './locales/en/bills.json';
+import enCustomers from './locales/en/customers.json';
 
 import hiCommon from './locales/hi/common.json';
 import hiDashboard from './locales/hi/dashboard.json';
@@ -21,6 +22,7 @@ import hiServices from './locales/hi/services.json';
 import hiAuth from './locales/hi/auth.json';
 import hiSettings from './locales/hi/settings.json';
 import hiBills from './locales/hi/bills.json';
+import hiCustomers from './locales/hi/customers.json';
 
 import bnCommon from './locales/bn/common.json';
 import bnDashboard from './locales/bn/dashboard.json';
@@ -31,6 +33,7 @@ import bnServices from './locales/bn/services.json';
 import bnAuth from './locales/bn/auth.json';
 import bnSettings from './locales/bn/settings.json';
 import bnBills from './locales/bn/bills.json';
+import bnCustomers from './locales/bn/customers.json';
 
 export const defaultNS = 'common';
 
@@ -45,6 +48,7 @@ export const resources = {
     auth: enAuth,
     settings: enSettings,
     bills: enBills,
+    customers: enCustomers,
   },
   hi: {
     common: hiCommon,
@@ -56,6 +60,7 @@ export const resources = {
     auth: hiAuth,
     settings: hiSettings,
     bills: hiBills,
+    customers: hiCustomers,
   },
   bn: {
     common: bnCommon,
@@ -67,6 +72,7 @@ export const resources = {
     auth: bnAuth,
     settings: bnSettings,
     bills: bnBills,
+    customers: bnCustomers,
   },
 } as const;
 
@@ -78,7 +84,7 @@ i18n
     supportedLngs: ['en', 'hi', 'bn'],
     fallbackLng: 'en',
     defaultNS,
-    ns: ['common', 'dashboard', 'transactions', 'reports', 'expenses', 'services', 'auth', 'settings', 'bills'],
+    ns: ['common', 'dashboard', 'transactions', 'reports', 'expenses', 'services', 'auth', 'settings', 'bills', 'customers'],
     interpolation: { escapeValue: false },
     // Only an explicit prior choice overrides the English default — the OS/browser
     // locale (e.g. a Hindi-language Windows install) must not silently win.

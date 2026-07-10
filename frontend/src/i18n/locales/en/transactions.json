@@ -22,7 +22,8 @@
   "paymentMode": {
     "cash": "Cash",
     "upi": "UPI",
-    "online": "Online"
+    "online": "Online",
+    "udhaar": "Udhaar"
   },
   "toast": {
     "created": "Transaction saved",

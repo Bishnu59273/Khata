@@ -52,6 +52,7 @@ export function EditTransactionModal({
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
       toast.success(t("toast.updated"));
       onClose();
     },
@@ -174,7 +175,16 @@ export function EditTransactionModal({
           {t("paymentModeLabel")}
         </label>
         <div className="mb-5">
-          <PaymentModeToggle value={mode} onChange={setMode} />
+          {/* Udhaar needs a linked customer record; only offer it when one exists. */}
+          <PaymentModeToggle
+            value={mode}
+            onChange={setMode}
+            modes={
+              transaction.customer_id
+                ? ["cash", "upi", "online", "udhaar"]
+                : ["cash", "upi", "online"]
+            }
+          />
         </div>
 
         <Button

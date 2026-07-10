@@ -5,6 +5,7 @@ const STYLES: Record<PaymentMode, CSSProperties> = {
   cash: { backgroundColor: '#eef5f0', color: '#3f7d5a' },
   upi: { backgroundColor: '#eef1f6', color: '#4a5f9e' },
   online: { backgroundColor: '#f6efe3', color: '#a9752b' },
+  udhaar: { backgroundColor: '#fbeeee', color: '#b4443f' },
 };
 
 export function paymentModePillStyle(mode: PaymentMode): CSSProperties {

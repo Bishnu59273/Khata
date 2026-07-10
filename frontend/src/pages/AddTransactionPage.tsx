@@ -9,6 +9,8 @@ import { createTransaction } from '../api/transactions';
 import { ServicePresetCard } from '../components/transactions/ServicePresetCard';
 import { PaymentModeToggle } from '../components/transactions/PaymentModeToggle';
 import { ServiceFormModal } from '../components/services/ServiceFormModal';
+import { CustomerPicker, type CustomerSelection } from '../components/customers/CustomerPicker';
+import { CustomerFormModal } from '../components/customers/CustomerFormModal';
 import { CardGridSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
 import { formatINR } from '../utils/currency';
@@ -32,7 +34,7 @@ export function AddTransactionPage() {
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [serviceQuery, setServiceQuery] = useState('');
-  const [customerName, setCustomerName] = useState('');
+  const [customer, setCustomer] = useState<CustomerSelection>({ customerId: null, name: '' });
   const [quantity, setQuantity] = useState('1');
   const [charge, setCharge] = useState('');
   const [cost, setCost] = useState('');
@@ -41,6 +43,7 @@ export function AddTransactionPage() {
   const [attempted, setAttempted] = useState(false);
   const [mode, setMode] = useState<PaymentMode>('cash');
   const [showAddService, setShowAddService] = useState(false);
+  const [showAddCustomer, setShowAddCustomer] = useState(false);
 
   const selectedService = services?.find((s) => s.id === selectedId) ?? null;
   const filteredServices = (services ?? []).filter((service) =>
@@ -51,6 +54,7 @@ export function AddTransactionPage() {
     mutationFn: createTransaction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['customers'] });
       toast.success(t('toast.created'));
       navigate('/dashboard');
     },
@@ -83,14 +87,17 @@ export function AddTransactionPage() {
   const chargeInvalid = !(chargeNum > 0);
   const showChargeError = attempted && chargeInvalid;
   const showLossWarning = !chargeInvalid && costNum > chargeNum;
+  const udhaarNeedsCustomer = mode === 'udhaar' && !customer.customerId;
+  const showUdhaarError = attempted && udhaarNeedsCustomer;
 
   function handleSave() {
     if (!selectedService) return;
     setAttempted(true);
-    if (chargeInvalid) return;
+    if (chargeInvalid || udhaarNeedsCustomer) return;
     mutation.mutate({
       service_id: selectedService.id,
-      customer_name: customerName.trim() || undefined,
+      customer_id: customer.customerId ?? undefined,
+      customer_name: customer.name.trim() || undefined,
       customer_charge: chargeNum,
       cost_paid: costNum,
       quantity: Number(quantity || 1),
@@ -154,13 +161,25 @@ export function AddTransactionPage() {
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t('customerName')}
         </label>
-        <input
-          type="text"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-          placeholder={t('customerNamePlaceholder')}
-          className="mb-4 w-full rounded-xl border border-border-soft bg-white px-3.5 py-3 text-base font-medium text-ink-900 outline-none"
-        />
+        <div className={showUdhaarError || udhaarNeedsCustomer ? 'mb-1.5' : 'mb-4'}>
+          <CustomerPicker value={customer} onChange={setCustomer} />
+        </div>
+        {showUdhaarError && (
+          <p className="mb-1.5 text-sm font-semibold text-danger-600">
+            {t('udhaarNeedsCustomer', { ns: 'customers' })}
+          </p>
+        )}
+        {udhaarNeedsCustomer && customer.name.trim() && (
+          <button
+            type="button"
+            onClick={() => setShowAddCustomer(true)}
+            className="mb-4 flex items-center gap-1.5 text-sm font-bold text-brand-600 hover:underline"
+          >
+            <Plus size={14} />
+            {t('quickCreate', { ns: 'customers', name: customer.name.trim() })}
+          </button>
+        )}
+        {udhaarNeedsCustomer && !customer.name.trim() && <div className="mb-2.5" />}
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('quantity')}</label>
         <div className="mb-4 flex items-center gap-2">
@@ -267,6 +286,15 @@ export function AddTransactionPage() {
 
       {showAddService && (
         <ServiceFormModal service={null} onClose={() => setShowAddService(false)} />
+      )}
+
+      {showAddCustomer && (
+        <CustomerFormModal
+          customer={null}
+          initialName={customer.name.trim()}
+          onClose={() => setShowAddCustomer(false)}
+          onCreated={(created) => setCustomer({ customerId: created.id, name: created.name })}
+        />
       )}
     </div>
   );

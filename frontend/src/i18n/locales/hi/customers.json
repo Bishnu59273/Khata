@@ -1,0 +1,52 @@
+{
+  "title": "ग्राहक",
+  "addCustomer": "ग्राहक जोड़ें",
+  "editCustomer": "ग्राहक संपादित करें",
+  "name": "नाम",
+  "phone": "फ़ोन नंबर",
+  "notes": "टिप्पणी",
+  "optional": "वैकल्पिक",
+  "searchPlaceholder": "नाम या फ़ोन से खोजें",
+  "totalDues": "कुल बकाया",
+  "settled": "चुकता",
+  "due": "बकाया",
+  "empty": "अभी तक कोई ग्राहक नहीं।",
+  "recordPayment": "भुगतान दर्ज करें",
+  "paymentAmount": "प्राप्त राशि",
+  "paymentNote": "टिप्पणी",
+  "statement": "खाता विवरण",
+  "statementEmpty": "अभी तक कोई उधार प्रविष्टि नहीं।",
+  "paymentReceived": "भुगतान प्राप्त हुआ",
+  "totalUdhaar": "कुल उधार",
+  "totalPaid": "कुल जमा",
+  "deleteCustomer": "ग्राहक हटाएं",
+  "deleteConfirmMessage": "{{name}} को हटाएं? पुराने लेनदेन में नाम बना रहेगा, लेकिन खाता रिकॉर्ड हट जाएगा।",
+  "table": {
+    "name": "नाम",
+    "phone": "फ़ोन",
+    "balance": "शेष"
+  },
+  "ledger": {
+    "date": "तारीख",
+    "detail": "विवरण",
+    "udhaar": "उधार",
+    "paid": "जमा",
+    "balance": "शेष"
+  },
+  "quickCreate": "\"{{name}}\" को ग्राहक के रूप में सहेजें",
+  "udhaarNeedsCustomer": "उधार प्रविष्टि के लिए ग्राहक चुनें या सहेजें",
+  "paymentExceedsDue": "राशि बकाया ({{amount}}) से अधिक है",
+  "deletePayment": "भुगतान हटाएं",
+  "deletePaymentConfirm": "{{amount}} का यह भुगतान हटाएं? बकाया फिर बढ़ जाएगा।",
+  "toast": {
+    "created": "ग्राहक जोड़ा गया",
+    "updated": "ग्राहक अपडेट हुआ",
+    "deleted": "ग्राहक हटाया गया",
+    "error": "ग्राहक सहेजा नहीं जा सका। कृपया पुनः प्रयास करें।",
+    "hasBalance": "इस ग्राहक का बकाया शेष है, इसे हटाया नहीं जा सकता।",
+    "paymentRecorded": "भुगतान दर्ज हुआ",
+    "paymentError": "भुगतान दर्ज नहीं हो सका। कृपया पुनः प्रयास करें।",
+    "paymentDeleted": "भुगतान हटाया गया",
+    "paymentDeleteError": "भुगतान हटाया नहीं जा सका। कृपया पुनः प्रयास करें।"
+  }
+}

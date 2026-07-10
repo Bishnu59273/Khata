@@ -5,6 +5,8 @@ import { LandingPage } from "../pages/LandingPage";
 import { DashboardPage } from "../pages/DashboardPage";
 import { TransactionsPage } from "../pages/TransactionsPage";
 import { AddTransactionPage } from "../pages/AddTransactionPage";
+import { CustomersPage } from "../pages/CustomersPage";
+import { CustomerDetailPage } from "../pages/CustomerDetailPage";
 import { ReportsPage } from "../pages/ReportsPage";
 import { ExpensesPage } from "../pages/ExpensesPage";
 import { ServicesPage } from "../pages/ServicesPage";
@@ -28,6 +30,8 @@ export const router = createBrowserRouter([
       { path: "dashboard", element: <DashboardPage /> },
       { path: "transactions", element: <TransactionsPage /> },
       { path: "transactions/new", element: <AddTransactionPage /> },
+      { path: "customers", element: <CustomersPage /> },
+      { path: "customers/:id", element: <CustomerDetailPage /> },
       { path: "reports", element: <ReportsPage /> },
       { path: "expenses", element: <ExpensesPage /> },
       { path: "services", element: <ServicesPage /> },

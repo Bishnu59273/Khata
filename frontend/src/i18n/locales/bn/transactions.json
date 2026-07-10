@@ -22,7 +22,8 @@
   "paymentMode": {
     "cash": "নগদ",
     "upi": "ইউপিআই",
-    "online": "অনলাইন"
+    "online": "অনলাইন",
+    "udhaar": "বাকি"
   },
   "toast": {
     "created": "লেনদেন সংরক্ষিত হয়েছে",

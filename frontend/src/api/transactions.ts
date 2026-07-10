@@ -11,6 +11,7 @@ export interface TransactionFilters {
 
 export interface CreateTransactionInput {
   service_id: string;
+  customer_id?: string | null;
   customer_name?: string;
   customer_charge: number;
   cost_paid: number;
