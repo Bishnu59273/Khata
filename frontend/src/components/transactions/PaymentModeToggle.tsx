@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { PaymentMode } from '../../types/models';
 
-const DEFAULT_MODES: PaymentMode[] = ['cash', 'upi', 'online', 'udhaar'];
+const DEFAULT_MODES: PaymentMode[] = ['cash', 'upi', 'udhaar'];
 
 const GRID_COLS: Record<number, string> = {
   2: 'grid-cols-2',

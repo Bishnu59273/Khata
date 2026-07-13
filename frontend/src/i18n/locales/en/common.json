@@ -37,6 +37,7 @@
   },
   "validation": {
     "chargePositive": "Charge must be greater than 0",
+    "discountExceedsCharge": "Discount can't be more than the charge",
     "amountPositive": "Amount must be greater than 0",
     "nameRequired": "Name is required",
     "descriptionRequired": "Description is required",

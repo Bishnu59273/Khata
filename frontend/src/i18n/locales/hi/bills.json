@@ -4,6 +4,8 @@
   "billTo": "बिल प्राप्तकर्ता",
   "date": "तारीख",
   "grandTotal": "कुल योग",
+  "subtotal": "उप-योग",
+  "discount": "छूट",
   "invoice": "इनवॉइस",
   "walkInCustomer": "सामान्य ग्राहक",
   "thankYou": "आपके सहयोग के लिए धन्यवाद!",

@@ -4,6 +4,8 @@
   "billTo": "বিল প্রাপক",
   "date": "তারিখ",
   "grandTotal": "সর্বমোট",
+  "subtotal": "উপমোট",
+  "discount": "ছাড়",
   "invoice": "ইনভয়েস",
   "walkInCustomer": "সাধারণ গ্রাহক",
   "thankYou": "আপনার ব্যবসার জন্য ধন্যবাদ!",

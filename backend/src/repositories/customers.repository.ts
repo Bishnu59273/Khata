@@ -14,7 +14,7 @@ import type {
 } from '../types/models.js';
 
 const STATEMENT_TX_SELECT =
-  'id, customer_charge, quantity, created_at, service:services(id,name_en,name_hi,name_bn)';
+  'id, customer_charge, discount, quantity, created_at, service:services(id,name_en,name_hi,name_bn)';
 
 async function getBalances(shopId: string): Promise<Map<string, CustomerBalance>> {
   const { data, error } = await supabase
@@ -122,13 +122,15 @@ export async function getCustomerStatement(
     ...(txResult.data as unknown as Array<{
       id: string;
       customer_charge: number;
+      discount: number;
       quantity: number;
       created_at: string;
       service: { id: string; name_en: string; name_hi: string; name_bn: string } | null;
     }>).map((tx) => ({
       type: 'udhaar' as const,
       id: tx.id,
-      amount: tx.customer_charge,
+      // What the customer owes: gross charge net of discount, matching customer_balances.
+      amount: tx.customer_charge - tx.discount,
       quantity: tx.quantity,
       service: tx.service,
       payment_mode: null,

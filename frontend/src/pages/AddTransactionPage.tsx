@@ -37,6 +37,7 @@ export function AddTransactionPage() {
   const [customer, setCustomer] = useState<CustomerSelection>({ customerId: null, name: '' });
   const [quantity, setQuantity] = useState('1');
   const [charge, setCharge] = useState('');
+  const [discount, setDiscount] = useState('');
   const [cost, setCost] = useState('');
   const [chargeEdited, setChargeEdited] = useState(false);
   const [costEdited, setCostEdited] = useState(false);
@@ -67,6 +68,7 @@ export function AddTransactionPage() {
     setSelectedId(service.id);
     setQuantity('1');
     setCharge(String(service.default_charge));
+    setDiscount('');
     setCost(String(service.default_cost));
     setChargeEdited(false);
     setCostEdited(false);
@@ -83,22 +85,25 @@ export function AddTransactionPage() {
   }
 
   const chargeNum = Number(charge || 0);
+  const discountNum = Number(discount || 0);
   const costNum = Number(cost || 0);
   const chargeInvalid = !(chargeNum > 0);
   const showChargeError = attempted && chargeInvalid;
-  const showLossWarning = !chargeInvalid && costNum > chargeNum;
+  const discountInvalid = discountNum < 0 || discountNum > chargeNum;
+  const showLossWarning = !chargeInvalid && !discountInvalid && costNum > chargeNum - discountNum;
   const udhaarNeedsCustomer = mode === 'udhaar' && !customer.customerId;
   const showUdhaarError = attempted && udhaarNeedsCustomer;
 
   function handleSave() {
     if (!selectedService) return;
     setAttempted(true);
-    if (chargeInvalid || udhaarNeedsCustomer) return;
+    if (chargeInvalid || discountInvalid || udhaarNeedsCustomer) return;
     mutation.mutate({
       service_id: selectedService.id,
       customer_id: customer.customerId ?? undefined,
       customer_name: customer.name.trim() || undefined,
       customer_charge: chargeNum,
+      discount: discountNum,
       cost_paid: costNum,
       quantity: Number(quantity || 1),
       payment_mode: mode,
@@ -108,7 +113,7 @@ export function AddTransactionPage() {
   if (status === 'pending') return <CardGridSkeleton count={6} columnsClass="sm:grid-cols-2" />;
   if (status === 'error') return <ErrorState />;
 
-  const liveProfit = chargeNum - costNum;
+  const liveProfit = chargeNum - discountNum - costNum;
   const canSave = !!selectedService && !mutation.isPending;
 
   return (
@@ -232,6 +237,28 @@ export function AddTransactionPage() {
         {showChargeError && (
           <p className="mb-4 text-sm font-semibold text-danger-600">
             {t('validation.chargePositive', { ns: 'common' })}
+          </p>
+        )}
+
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('discount')}</label>
+        <div
+          className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
+            discountInvalid ? 'mb-1.5 border-danger-600' : 'mb-4 border-border-soft'
+          }`}
+        >
+          <span className="text-lg font-bold text-ink-600">₹</span>
+          <input
+            type="number"
+            min={0}
+            value={discount}
+            onChange={(e) => setDiscount(e.target.value)}
+            placeholder="0"
+            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
+          />
+        </div>
+        {discountInvalid && (
+          <p className="mb-4 text-sm font-semibold text-danger-600">
+            {t('validation.discountExceedsCharge', { ns: 'common' })}
           </p>
         )}
 

@@ -15,6 +15,7 @@
   "generateBill": "Generate Bill",
   "quantity": "Quantity",
   "customerCharge": "Customer Charge",
+  "discount": "Discount",
   "costPaid": "Portal Cost",
   "paymentModeLabel": "Payment Mode",
   "save": "Save Transaction",
@@ -22,7 +23,6 @@
   "paymentMode": {
     "cash": "Cash",
     "upi": "UPI",
-    "online": "Online",
     "udhaar": "Udhaar"
   },
   "toast": {

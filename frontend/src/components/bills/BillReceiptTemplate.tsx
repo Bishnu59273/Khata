@@ -13,7 +13,9 @@ export function BillReceiptTemplate({
 }) {
   const { t, i18n } = useTranslation('bills');
   const customerName = transactions.find((tx) => tx.customer_name)?.customer_name ?? t('walkInCustomer');
-  const grandTotal = transactions.reduce((sum, tx) => sum + tx.customer_charge, 0);
+  const subtotal = transactions.reduce((sum, tx) => sum + tx.customer_charge, 0);
+  const totalDiscount = transactions.reduce((sum, tx) => sum + (tx.discount ?? 0), 0);
+  const grandTotal = subtotal - totalDiscount;
 
   return (
     <div className="mx-auto max-w-sm bg-white p-6 text-black">
@@ -49,6 +51,19 @@ export function BillReceiptTemplate({
       </div>
 
       <div className="my-3 border-t border-dashed border-black" />
+
+      {totalDiscount > 0 && (
+        <div className="mb-1 flex flex-col gap-1 text-sm">
+          <div className="flex items-baseline justify-between">
+            <div>{t('subtotal')}</div>
+            <div>{formatINR(subtotal)}</div>
+          </div>
+          <div className="flex items-baseline justify-between">
+            <div>{t('discount')}</div>
+            <div>−{formatINR(totalDiscount)}</div>
+          </div>
+        </div>
+      )}
 
       <div className="flex items-baseline justify-between text-base font-bold">
         <div>{t('grandTotal')}</div>

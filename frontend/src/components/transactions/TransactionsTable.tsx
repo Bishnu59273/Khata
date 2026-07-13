@@ -75,6 +75,7 @@ function DesktopTable({
             <th className="px-4 py-3 font-semibold text-ink-700">{t('table.customer')}</th>
             <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.qty')}</th>
             <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.charge')}</th>
+            <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.discount')}</th>
             <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.cost')}</th>
             <th className="px-4 py-3 text-right font-semibold text-ink-700">{t('table.profit')}</th>
             <th className="px-4 py-3 font-semibold text-ink-700">{t('table.paymentMode')}</th>
@@ -107,6 +108,9 @@ function DesktopTable({
               <td className="px-4 py-3 text-ink-600">{tx.customer_name || '—'}</td>
               <td className="px-4 py-3 text-right text-ink-600">×{tx.quantity}</td>
               <td className="px-4 py-3 text-right text-ink-900">{formatINR(tx.customer_charge)}</td>
+              <td className="px-4 py-3 text-right text-ink-600">
+                {tx.discount ? formatINR(tx.discount) : '—'}
+              </td>
               <td className="px-4 py-3 text-right text-cost-600">{formatINR(tx.cost_paid)}</td>
               <td className="px-4 py-3 text-right font-bold text-success-600">{formatINR(tx.profit)}</td>
               <td className="px-4 py-3">
@@ -219,6 +223,12 @@ function MobileCards({
                 <div className="text-xs font-semibold text-ink-600">{t('table.charge')}</div>
                 <div className="text-sm font-semibold text-ink-900">{formatINR(tx.customer_charge)}</div>
               </div>
+              {tx.discount > 0 && (
+                <div>
+                  <div className="text-xs font-semibold text-ink-600">{t('table.discount')}</div>
+                  <div className="text-sm font-semibold text-ink-600">{formatINR(tx.discount)}</div>
+                </div>
+              )}
               <div>
                 <div className="text-xs font-semibold text-ink-600">{t('table.cost')}</div>
                 <div className="text-sm font-semibold text-cost-600">{formatINR(tx.cost_paid)}</div>

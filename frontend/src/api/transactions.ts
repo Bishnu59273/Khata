@@ -14,6 +14,7 @@ export interface CreateTransactionInput {
   customer_id?: string | null;
   customer_name?: string;
   customer_charge: number;
+  discount?: number;
   cost_paid: number;
   quantity?: number;
   payment_mode: PaymentMode;

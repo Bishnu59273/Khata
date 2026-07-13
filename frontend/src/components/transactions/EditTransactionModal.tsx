@@ -36,6 +36,7 @@ export function EditTransactionModal({
   const [customerName, setCustomerName] = useState(transaction.customer_name ?? '');
   const [quantity, setQuantity] = useState(String(transaction.quantity));
   const [charge, setCharge] = useState(String(transaction.customer_charge));
+  const [discount, setDiscount] = useState(String(transaction.discount ?? 0));
   const [cost, setCost] = useState(String(transaction.cost_paid));
   const [mode, setMode] = useState<PaymentMode>(transaction.payment_mode);
   const [attempted, setAttempted] = useState(false);
@@ -46,6 +47,7 @@ export function EditTransactionModal({
         service_id: serviceId,
         customer_name: customerName.trim() || undefined,
         customer_charge: Number(charge || 0),
+        discount: Number(discount || 0),
         cost_paid: Number(cost || 0),
         quantity: Number(quantity || 1),
         payment_mode: mode,
@@ -62,15 +64,17 @@ export function EditTransactionModal({
   });
 
   const chargeNum = Number(charge || 0);
+  const discountNum = Number(discount || 0);
   const costNum = Number(cost || 0);
   const chargeInvalid = !(chargeNum > 0);
   const showChargeError = attempted && chargeInvalid;
-  const showLossWarning = !chargeInvalid && costNum > chargeNum;
-  const liveProfit = chargeNum - costNum;
+  const discountInvalid = discountNum < 0 || discountNum > chargeNum;
+  const showLossWarning = !chargeInvalid && !discountInvalid && costNum > chargeNum - discountNum;
+  const liveProfit = chargeNum - discountNum - costNum;
 
   function handleSave() {
     setAttempted(true);
-    if (chargeInvalid) return;
+    if (chargeInvalid || discountInvalid) return;
     saveMutation.mutate();
   }
 
@@ -143,6 +147,30 @@ export function EditTransactionModal({
         )}
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+          {t("discount")}
+        </label>
+        <div
+          className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
+            discountInvalid ? "mb-1.5 border-danger-600" : "mb-4 border-border-soft"
+          }`}
+        >
+          <span className="text-lg font-bold text-ink-600">₹</span>
+          <input
+            type="number"
+            min={0}
+            value={discount}
+            onChange={(e) => setDiscount(e.target.value)}
+            placeholder="0"
+            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
+          />
+        </div>
+        {discountInvalid && (
+          <p className="mb-4 text-sm font-semibold text-danger-600">
+            {t("validation.discountExceedsCharge", { ns: "common" })}
+          </p>
+        )}
+
+        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t("costPaid")}
         </label>
         <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
@@ -181,8 +209,8 @@ export function EditTransactionModal({
             onChange={setMode}
             modes={
               transaction.customer_id
-                ? ["cash", "upi", "online", "udhaar"]
-                : ["cash", "upi", "online"]
+                ? ["cash", "upi", "udhaar"]
+                : ["cash", "upi"]
             }
           />
         </div>

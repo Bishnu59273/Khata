@@ -37,6 +37,7 @@
   },
   "validation": {
     "chargePositive": "চার্জ ০-এর বেশি হতে হবে",
+    "discountExceedsCharge": "ছাড় চার্জের চেয়ে বেশি হতে পারে না",
     "amountPositive": "পরিমাণ ০-এর বেশি হতে হবে",
     "nameRequired": "নাম আবশ্যক",
     "descriptionRequired": "বিবরণ আবশ্যক",

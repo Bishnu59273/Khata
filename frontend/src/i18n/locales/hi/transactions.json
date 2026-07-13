@@ -15,6 +15,7 @@
   "generateBill": "बिल बनाएं",
   "quantity": "मात्रा",
   "customerCharge": "ग्राहक शुल्क",
+  "discount": "छूट",
   "costPaid": "पोर्टल लागत",
   "paymentModeLabel": "भुगतान का तरीका",
   "save": "लेनदेन सहेजें",
@@ -22,7 +23,6 @@
   "paymentMode": {
     "cash": "नगद",
     "upi": "यूपीआई",
-    "online": "ऑनलाइन",
     "udhaar": "उधार"
   },
   "toast": {

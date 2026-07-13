@@ -13,6 +13,7 @@
     "customer": "Customer",
     "qty": "Qty",
     "charge": "Charge",
+    "discount": "Discount",
     "cost": "Cost",
     "profit": "Profit",
     "paymentMode": "Payment",

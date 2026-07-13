@@ -9,7 +9,7 @@ import { createCustomerPayment } from '../../api/customers';
 import { formatINR } from '../../utils/currency';
 import type { CustomerWithBalance, SettlementMode } from '../../types/models';
 
-const SETTLEMENT_MODES: SettlementMode[] = ['cash', 'upi', 'online'];
+const SETTLEMENT_MODES: SettlementMode[] = ['cash', 'upi'];
 
 export function RecordPaymentModal({
   customer,

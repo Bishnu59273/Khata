@@ -37,6 +37,7 @@
   },
   "validation": {
     "chargePositive": "शुल्क 0 से अधिक होना चाहिए",
+    "discountExceedsCharge": "छूट शुल्क से अधिक नहीं हो सकती",
     "amountPositive": "राशि 0 से अधिक होनी चाहिए",
     "nameRequired": "नाम आवश्यक है",
     "descriptionRequired": "विवरण आवश्यक है",

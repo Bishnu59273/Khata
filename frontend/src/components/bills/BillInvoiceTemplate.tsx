@@ -13,7 +13,9 @@ export function BillInvoiceTemplate({
 }) {
   const { t, i18n } = useTranslation('bills');
   const customerName = transactions.find((tx) => tx.customer_name)?.customer_name ?? t('walkInCustomer');
-  const grandTotal = transactions.reduce((sum, tx) => sum + tx.customer_charge, 0);
+  const subtotal = transactions.reduce((sum, tx) => sum + tx.customer_charge, 0);
+  const totalDiscount = transactions.reduce((sum, tx) => sum + (tx.discount ?? 0), 0);
+  const grandTotal = subtotal - totalDiscount;
   const today = formatBillDate(new Date().toISOString(), i18n.language);
 
   return (
@@ -60,9 +62,23 @@ export function BillInvoiceTemplate({
       </table>
 
       <div className="mt-4 flex justify-end">
-        <div className="flex w-56 items-center justify-between border-t border-black pt-2 text-base font-bold">
-          <div>{t('grandTotal')}</div>
-          <div>{formatINR(grandTotal)}</div>
+        <div className="w-56">
+          {totalDiscount > 0 && (
+            <>
+              <div className="flex items-center justify-between py-1 text-sm">
+                <div>{t('subtotal')}</div>
+                <div>{formatINR(subtotal)}</div>
+              </div>
+              <div className="flex items-center justify-between py-1 text-sm">
+                <div>{t('discount')}</div>
+                <div>−{formatINR(totalDiscount)}</div>
+              </div>
+            </>
+          )}
+          <div className="flex items-center justify-between border-t border-black pt-2 text-base font-bold">
+            <div>{t('grandTotal')}</div>
+            <div>{formatINR(grandTotal)}</div>
+          </div>
         </div>
       </div>
 

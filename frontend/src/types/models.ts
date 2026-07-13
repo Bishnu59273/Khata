@@ -1,7 +1,7 @@
-export type PaymentMode = 'cash' | 'upi' | 'online' | 'udhaar';
+export type PaymentMode = 'cash' | 'upi' | 'udhaar';
 
 /** Modes accepted for khata settlements — real money in hand, never udhaar. */
-export type SettlementMode = 'cash' | 'upi' | 'online';
+export type SettlementMode = 'cash' | 'upi';
 
 export interface ServiceSummary {
   id: string;
@@ -24,6 +24,7 @@ export interface Transaction {
   customer_id: string | null;
   customer_name: string | null;
   customer_charge: number;
+  discount: number;
   cost_paid: number;
   quantity: number;
   profit: number;

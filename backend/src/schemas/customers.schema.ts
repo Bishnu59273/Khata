@@ -13,7 +13,7 @@ export const listCustomersQuerySchema = z.object({
 });
 
 // Settlements against the khata are always real money in hand — never udhaar.
-export const settlementModeSchema = z.enum(['cash', 'upi', 'online']);
+export const settlementModeSchema = z.enum(['cash', 'upi']);
 
 export const createCustomerPaymentSchema = z.object({
   amount: z.number().positive(),

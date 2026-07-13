@@ -1,12 +1,13 @@
 import { z } from 'zod';
 
-export const paymentModeSchema = z.enum(['cash', 'upi', 'online', 'udhaar']);
+export const paymentModeSchema = z.enum(['cash', 'upi', 'udhaar']);
 
 const transactionFieldsSchema = z.object({
   service_id: z.uuid(),
   customer_id: z.uuid().nullable().optional(),
   customer_name: z.string().min(1).optional(),
   customer_charge: z.number().nonnegative(),
+  discount: z.number().nonnegative().default(0),
   cost_paid: z.number().nonnegative().default(0),
   quantity: z.number().int().positive().default(1),
   payment_mode: paymentModeSchema,
@@ -15,10 +16,15 @@ const transactionFieldsSchema = z.object({
 const requireCustomerForUdhaar = (data: { payment_mode?: string; customer_id?: string | null }) =>
   data.payment_mode !== 'udhaar' || !!data.customer_id;
 
-export const createTransactionSchema = transactionFieldsSchema.refine(requireCustomerForUdhaar, {
-  message: 'Udhaar transactions require a customer',
-  path: ['customer_id'],
-});
+export const createTransactionSchema = transactionFieldsSchema
+  .refine(requireCustomerForUdhaar, {
+    message: 'Udhaar transactions require a customer',
+    path: ['customer_id'],
+  })
+  .refine((data) => data.discount <= data.customer_charge, {
+    message: 'Discount cannot exceed the customer charge',
+    path: ['discount'],
+  });
 
 // .partial() drops the refine, so updates re-check udhaar⇒customer in the
 // controller where the existing row's values are available.

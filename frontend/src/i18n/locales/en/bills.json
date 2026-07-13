@@ -4,6 +4,8 @@
   "billTo": "Bill To",
   "date": "Date",
   "grandTotal": "Grand Total",
+  "subtotal": "Subtotal",
+  "discount": "Discount",
   "invoice": "Invoice",
   "walkInCustomer": "Walk-in Customer",
   "thankYou": "Thank you for your business!",

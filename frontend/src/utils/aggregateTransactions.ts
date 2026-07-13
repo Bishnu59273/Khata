@@ -11,7 +11,7 @@ export function aggregateTransactions(transactions: Transaction[]): TransactionA
   return transactions.reduce(
     (acc, tx) => ({
       totalProfit: acc.totalProfit + tx.profit,
-      totalCollected: acc.totalCollected + tx.customer_charge,
+      totalCollected: acc.totalCollected + tx.customer_charge - (tx.discount ?? 0),
       totalCost: acc.totalCost + tx.cost_paid,
       count: acc.count + 1,
     }),

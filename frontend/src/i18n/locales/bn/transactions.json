@@ -15,6 +15,7 @@
   "generateBill": "বিল তৈরি করুন",
   "quantity": "পরিমাণ",
   "customerCharge": "গ্রাহক চার্জ",
+  "discount": "ছাড়",
   "costPaid": "পোর্টাল খরচ",
   "paymentModeLabel": "পেমেন্ট মোড",
   "save": "লেনদেন সংরক্ষণ করুন",
@@ -22,7 +23,6 @@
   "paymentMode": {
     "cash": "নগদ",
     "upi": "ইউপিআই",
-    "online": "অনলাইন",
     "udhaar": "বাকি"
   },
   "toast": {
