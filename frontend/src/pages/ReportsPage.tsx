@@ -10,7 +10,7 @@ import { TransactionsTable } from '../components/transactions/TransactionsTable'
 import { EditTransactionModal } from '../components/transactions/EditTransactionModal';
 import { DeleteTransactionModal } from '../components/transactions/DeleteTransactionModal';
 import { ProfitTrendChart } from '../components/reports/ProfitTrendChart';
-import { StatCardsSkeleton, TableSkeleton } from '../components/common/Skeletons';
+import { ChartSkeleton, StatCardsSkeleton, TableSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
 import { EmptyState } from '../components/common/EmptyState';
 import { formatINR } from '../utils/currency';
@@ -41,6 +41,9 @@ export function ReportsPage() {
   const { data: trendData } = useQuery({
     queryKey: ['transactions', 'range', trendRange.from, trendRange.to],
     queryFn: () => getTransactions(trendRange),
+    // Hold the previous chart while a preset switch refetches — the bars morph
+    // to the new buckets instead of flashing a skeleton.
+    placeholderData: (prev) => prev,
   });
 
   const aggregates = aggregateTransactions(data ?? []);
@@ -113,7 +116,11 @@ export function ReportsPage() {
             />
           </div>
 
-          {trendData && <ProfitTrendChart transactions={trendData} granularity={granularity} />}
+          {trendData ? (
+            <ProfitTrendChart transactions={trendData} granularity={granularity} />
+          ) : (
+            <ChartSkeleton />
+          )}
 
           <div>
             <h2 className="mb-3 text-base font-bold text-ink-900">{t('detail')}</h2>

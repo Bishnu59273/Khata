@@ -30,6 +30,30 @@ export function TableSkeleton({ rows = 6 }: { rows?: number }) {
   );
 }
 
+const CHART_SKELETON_BAR_HEIGHTS = [40, 65, 50, 80, 60, 90, 70];
+
+export function ChartSkeleton() {
+  return (
+    <div className="rounded-2xl border border-border-soft bg-surface p-6">
+      <Skeleton className="mb-5 h-4 w-48" />
+      <div className="flex h-[170px] items-end justify-around gap-3">
+        {CHART_SKELETON_BAR_HEIGHTS.map((height, i) => (
+          <Skeleton
+            key={i}
+            className="w-full max-w-6 rounded-t"
+            style={{ height: `${height}%` }}
+          />
+        ))}
+      </div>
+      <div className="mt-2 flex justify-around gap-3">
+        {CHART_SKELETON_BAR_HEIGHTS.map((_, i) => (
+          <Skeleton key={i} className="h-3 w-8" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function CardGridSkeleton({
   count = 6,
   columnsClass = 'sm:grid-cols-2 lg:grid-cols-3',
