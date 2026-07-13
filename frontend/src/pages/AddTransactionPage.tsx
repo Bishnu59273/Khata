@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
@@ -14,6 +14,7 @@ import { CustomerFormModal } from '../components/customers/CustomerFormModal';
 import { CardGridSkeleton } from '../components/common/Skeletons';
 import { ErrorState } from '../components/common/ErrorState';
 import { formatINR } from '../utils/currency';
+import { bumpServiceUsage, getServiceUsage } from '../utils/serviceUsage';
 import type { PaymentMode, Service } from '../types/models';
 
 function serviceName(service: Service, lang: string): string {
@@ -21,6 +22,8 @@ function serviceName(service: Service, lang: string): string {
   if (lang === 'bn') return service.name_bn;
   return service.name_en;
 }
+
+const VISIBLE_COUNT = 8;
 
 export function AddTransactionPage() {
   const { t, i18n } = useTranslation('transactions');
@@ -34,11 +37,16 @@ export function AddTransactionPage() {
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [serviceQuery, setServiceQuery] = useState('');
+  const [showAll, setShowAll] = useState(false);
+  // Snapshot per visit so the list doesn't reorder under the user's finger.
+  const [usage] = useState(() => getServiceUsage());
   const [customer, setCustomer] = useState<CustomerSelection>({ customerId: null, name: '' });
   const [quantity, setQuantity] = useState('1');
   const [charge, setCharge] = useState('');
   const [discount, setDiscount] = useState('');
+  const [discountOpen, setDiscountOpen] = useState(false);
   const [cost, setCost] = useState('');
+  const formRef = useRef<HTMLDivElement>(null);
   const [chargeEdited, setChargeEdited] = useState(false);
   const [costEdited, setCostEdited] = useState(false);
   const [attempted, setAttempted] = useState(false);
@@ -47,13 +55,29 @@ export function AddTransactionPage() {
   const [showAddCustomer, setShowAddCustomer] = useState(false);
 
   const selectedService = services?.find((s) => s.id === selectedId) ?? null;
-  const filteredServices = (services ?? []).filter((service) =>
-    serviceName(service, i18n.language).toLowerCase().includes(serviceQuery.trim().toLowerCase())
+  const query = serviceQuery.trim().toLowerCase();
+  // Most-used services first (stable sort keeps API order for ties).
+  const rankedServices = [...(services ?? [])].sort(
+    (a, b) => (usage[b.id] ?? 0) - (usage[a.id] ?? 0)
   );
+  const filteredServices = rankedServices.filter((service) =>
+    serviceName(service, i18n.language).toLowerCase().includes(query)
+  );
+  const showToggle = !query && filteredServices.length > VISIBLE_COUNT;
+  let visibleServices = filteredServices;
+  if (showToggle && !showAll) {
+    visibleServices = filteredServices.slice(0, VISIBLE_COUNT);
+    // Keep the selected card visible even if it ranks below the cap.
+    if (selectedId && !visibleServices.some((s) => s.id === selectedId)) {
+      const selected = filteredServices.find((s) => s.id === selectedId);
+      if (selected) visibleServices = [...visibleServices.slice(0, VISIBLE_COUNT - 1), selected];
+    }
+  }
 
   const mutation = useMutation({
     mutationFn: createTransaction,
-    onSuccess: () => {
+    onSuccess: (created) => {
+      bumpServiceUsage(created.service_id);
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['customers'] });
       toast.success(t('toast.created'));
@@ -64,15 +88,24 @@ export function AddTransactionPage() {
     },
   });
 
+  // The two columns stack below lg, leaving the form far beneath the grid.
+  function scrollFormIntoView() {
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
   function pickService(service: Service) {
     setSelectedId(service.id);
     setQuantity('1');
     setCharge(String(service.default_charge));
     setDiscount('');
+    setDiscountOpen(false);
     setCost(String(service.default_cost));
     setChargeEdited(false);
     setCostEdited(false);
     setAttempted(false);
+    scrollFormIntoView();
   }
 
   function applyQuantity(nextQuantity: number) {
@@ -97,7 +130,10 @@ export function AddTransactionPage() {
   function handleSave() {
     if (!selectedService) return;
     setAttempted(true);
-    if (chargeInvalid || discountInvalid || udhaarNeedsCustomer) return;
+    if (chargeInvalid || discountInvalid || udhaarNeedsCustomer) {
+      scrollFormIntoView();
+      return;
+    }
     mutation.mutate({
       service_id: selectedService.id,
       customer_id: customer.customerId ?? undefined,
@@ -144,7 +180,7 @@ export function AddTransactionPage() {
           <p className="text-sm text-ink-600">{t('noServicesFound')}</p>
         ) : (
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
-            {filteredServices.map((service) => (
+            {visibleServices.map((service) => (
               <ServicePresetCard
                 key={service.id}
                 service={service}
@@ -155,9 +191,20 @@ export function AddTransactionPage() {
             ))}
           </div>
         )}
+        {showToggle && (
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            className="mt-3.5 w-full rounded-xl border border-border-soft bg-white px-3 py-2.5 text-sm font-bold text-brand-600 hover:bg-brand-50"
+          >
+            {showAll
+              ? t('showLessServices')
+              : t('showAllServices', { count: filteredServices.length })}
+          </button>
+        )}
       </div>
 
-      <div className="rounded-2xl border border-border-soft bg-surface p-6">
+      <div ref={formRef} className="scroll-mt-2 rounded-2xl border border-border-soft bg-surface p-6">
         <h2 className="text-base font-bold text-ink-900">{t('entryDetails')}</h2>
         <p className="mb-4 text-xs text-ink-600">
           {selectedService ? serviceName(selectedService, i18n.language) : t('selectPrompt')}
@@ -214,25 +261,47 @@ export function AddTransactionPage() {
           </button>
         </div>
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
-          {t('customerCharge')}
-        </label>
-        <div
-          className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
-            showChargeError ? 'border-danger-600' : 'border-border-soft'
-          } ${showChargeError ? 'mb-1.5' : 'mb-4'}`}
-        >
-          <span className="text-lg font-bold text-ink-600">₹</span>
-          <input
-            type="number"
-            value={charge}
-            onChange={(e) => {
-              setCharge(e.target.value);
-              setChargeEdited(true);
-            }}
-            placeholder="0"
-            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
-          />
+        <div className={`grid grid-cols-2 gap-3 ${showChargeError ? 'mb-1.5' : 'mb-4'}`}>
+          <div>
+            <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+              {t('customerCharge')}
+            </label>
+            <div
+              className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
+                showChargeError ? 'border-danger-600' : 'border-border-soft'
+              }`}
+            >
+              <span className="text-lg font-bold text-ink-600">₹</span>
+              <input
+                type="number"
+                value={charge}
+                onChange={(e) => {
+                  setCharge(e.target.value);
+                  setChargeEdited(true);
+                }}
+                placeholder="0"
+                className="w-full min-w-0 bg-transparent py-3 text-lg font-bold text-ink-900 outline-none"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+              {t('costPaid')}
+            </label>
+            <div className="flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
+              <span className="text-lg font-bold text-ink-600">₹</span>
+              <input
+                type="number"
+                value={cost}
+                onChange={(e) => {
+                  setCost(e.target.value);
+                  setCostEdited(true);
+                }}
+                placeholder="0"
+                className="w-full min-w-0 bg-transparent py-3 text-lg font-bold text-ink-900 outline-none"
+              />
+            </div>
+          </div>
         </div>
         {showChargeError && (
           <p className="mb-4 text-sm font-semibold text-danger-600">
@@ -240,42 +309,44 @@ export function AddTransactionPage() {
           </p>
         )}
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('discount')}</label>
-        <div
-          className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
-            discountInvalid ? 'mb-1.5 border-danger-600' : 'mb-4 border-border-soft'
-          }`}
-        >
-          <span className="text-lg font-bold text-ink-600">₹</span>
-          <input
-            type="number"
-            min={0}
-            value={discount}
-            onChange={(e) => setDiscount(e.target.value)}
-            placeholder="0"
-            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
-          />
-        </div>
-        {discountInvalid && (
-          <p className="mb-4 text-sm font-semibold text-danger-600">
-            {t('validation.discountExceedsCharge', { ns: 'common' })}
-          </p>
+        {discountOpen || discount !== '' ? (
+          <>
+            <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+              {t('discount')}
+            </label>
+            <div
+              className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
+                discountInvalid ? 'mb-1.5 border-danger-600' : 'mb-4 border-border-soft'
+              }`}
+            >
+              <span className="text-lg font-bold text-ink-600">₹</span>
+              <input
+                type="number"
+                min={0}
+                autoFocus
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+                placeholder="0"
+                className="w-full bg-transparent py-3 text-lg font-bold text-ink-900 outline-none"
+              />
+            </div>
+            {discountInvalid && (
+              <p className="mb-4 text-sm font-semibold text-danger-600">
+                {t('validation.discountExceedsCharge', { ns: 'common' })}
+              </p>
+            )}
+          </>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setDiscountOpen(true)}
+            disabled={!selectedService}
+            className="mb-4 flex items-center gap-1.5 text-sm font-bold text-brand-600 hover:underline disabled:opacity-50"
+          >
+            <Plus size={14} />
+            {t('addDiscount')}
+          </button>
         )}
-
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">{t('costPaid')}</label>
-        <div className="mb-4 flex items-center gap-2 rounded-xl border border-border-soft bg-white px-3.5">
-          <span className="text-lg font-bold text-ink-600">₹</span>
-          <input
-            type="number"
-            value={cost}
-            onChange={(e) => {
-              setCost(e.target.value);
-              setCostEdited(true);
-            }}
-            placeholder="0"
-            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
-          />
-        </div>
 
         {showLossWarning && (
           <div className="mb-4 flex items-start gap-2 rounded-xl border border-cost-600/30 bg-cost-600/[8%] px-3.5 py-2.5 text-sm font-semibold text-cost-600">
@@ -284,31 +355,50 @@ export function AddTransactionPage() {
           </div>
         )}
 
-        <div className="mb-4 flex items-center justify-between rounded-xl border border-success-border bg-success-bg px-4 py-3">
-          <span className="text-sm font-semibold text-[#4d7a5e]">{t('table.profit', { ns: 'dashboard' })}</span>
-          <span className="text-2xl font-bold text-success-600">{formatINR(liveProfit)}</span>
-        </div>
-
         <label className="mb-2 block text-sm font-semibold text-ink-700">
           {t('paymentModeLabel')}
         </label>
-        <div className="mb-5">
+        <div className="mb-4">
           <PaymentModeToggle value={mode} onChange={setMode} />
         </div>
 
-        <button
-          type="button"
-          disabled={!canSave}
-          onClick={handleSave}
-          className={`flex w-full items-center justify-center gap-2.5 rounded-xl py-4 text-base font-bold transition-colors ${
-            canSave
-              ? 'bg-brand-500 text-white shadow-sm hover:bg-brand-600'
-              : 'cursor-not-allowed bg-[#e6ddce] text-[#b3a894]'
-          }`}
-        >
-          <Check size={20} />
-          {t('save')}
-        </button>
+        {/* Sticky only when the columns stack; on desktop it's a normal card
+            footer, otherwise it floats over and blocks the fields above it. */}
+        <div className="-mx-6 -mb-6 rounded-b-2xl border-t border-border-soft bg-surface px-6 py-3.5 max-lg:sticky max-lg:bottom-0 max-lg:z-10">
+          {selectedService && (
+            <div className="mb-2.5 flex items-center justify-between text-sm font-semibold text-ink-700">
+              <span>
+                {t('totalLabel')}{' '}
+                <span className="text-base font-bold text-ink-900">
+                  {formatINR(chargeNum - discountNum)}
+                </span>
+              </span>
+              <span>
+                {t('table.profit', { ns: 'dashboard' })}{' '}
+                <span
+                  className={`text-base font-bold ${
+                    liveProfit < 0 ? 'text-cost-600' : 'text-success-600'
+                  }`}
+                >
+                  {formatINR(liveProfit)}
+                </span>
+              </span>
+            </div>
+          )}
+          <button
+            type="button"
+            disabled={!canSave}
+            onClick={handleSave}
+            className={`flex w-full items-center justify-center gap-2.5 rounded-xl py-4 text-base font-bold transition-colors ${
+              canSave
+                ? 'bg-brand-500 text-white shadow-sm hover:bg-brand-600'
+                : 'cursor-not-allowed bg-[#e6ddce] text-[#b3a894]'
+            }`}
+          >
+            <Check size={20} />
+            {t('save')}
+          </button>
+        </div>
       </div>
 
       {showAddService && (

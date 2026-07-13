@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { TriangleAlert } from "lucide-react";
+import { Plus, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
@@ -36,7 +36,10 @@ export function EditTransactionModal({
   const [customerName, setCustomerName] = useState(transaction.customer_name ?? '');
   const [quantity, setQuantity] = useState(String(transaction.quantity));
   const [charge, setCharge] = useState(String(transaction.customer_charge));
-  const [discount, setDiscount] = useState(String(transaction.discount ?? 0));
+  const [discount, setDiscount] = useState(
+    (transaction.discount ?? 0) > 0 ? String(transaction.discount) : ''
+  );
+  const [discountOpen, setDiscountOpen] = useState((transaction.discount ?? 0) > 0);
   const [cost, setCost] = useState(String(transaction.cost_paid));
   const [mode, setMode] = useState<PaymentMode>(transaction.payment_mode);
   const [attempted, setAttempted] = useState(false);
@@ -146,28 +149,41 @@ export function EditTransactionModal({
           </p>
         )}
 
-        <label className="mb-1.5 block text-sm font-semibold text-ink-700">
-          {t("discount")}
-        </label>
-        <div
-          className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
-            discountInvalid ? "mb-1.5 border-danger-600" : "mb-4 border-border-soft"
-          }`}
-        >
-          <span className="text-lg font-bold text-ink-600">₹</span>
-          <input
-            type="number"
-            min={0}
-            value={discount}
-            onChange={(e) => setDiscount(e.target.value)}
-            placeholder="0"
-            className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
-          />
-        </div>
-        {discountInvalid && (
-          <p className="mb-4 text-sm font-semibold text-danger-600">
-            {t("validation.discountExceedsCharge", { ns: "common" })}
-          </p>
+        {discountOpen || discount !== '' ? (
+          <>
+            <label className="mb-1.5 block text-sm font-semibold text-ink-700">
+              {t("discount")}
+            </label>
+            <div
+              className={`flex items-center gap-2 rounded-xl border bg-white px-3.5 ${
+                discountInvalid ? "mb-1.5 border-danger-600" : "mb-4 border-border-soft"
+              }`}
+            >
+              <span className="text-lg font-bold text-ink-600">₹</span>
+              <input
+                type="number"
+                min={0}
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+                placeholder="0"
+                className="w-full bg-transparent py-3 text-xl font-bold text-ink-900 outline-none"
+              />
+            </div>
+            {discountInvalid && (
+              <p className="mb-4 text-sm font-semibold text-danger-600">
+                {t("validation.discountExceedsCharge", { ns: "common" })}
+              </p>
+            )}
+          </>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setDiscountOpen(true)}
+            className="mb-4 flex items-center gap-1.5 text-sm font-bold text-brand-600 hover:underline"
+          >
+            <Plus size={14} />
+            {t("addDiscount")}
+          </button>
         )}
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
