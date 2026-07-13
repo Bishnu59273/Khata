@@ -8,7 +8,11 @@
   },
   "customFrom": "From",
   "customTo": "To",
-  "trend": "Profit Trend (last 7 days)",
+  "trend": {
+    "day": "Profit Trend (last 7 days)",
+    "week": "Profit Trend (last 7 weeks)",
+    "month": "Profit Trend (last 7 months)"
+  },
   "detail": "Transaction Details",
   "empty": "No transactions in this period."
 }

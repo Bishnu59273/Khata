@@ -42,3 +42,57 @@ export function istDateKey(isoString: string): string {
 export function last7DayKeys(): string[] {
   return Array.from({ length: 7 }, (_, i) => toDateStr(daysAgo(6 - i)));
 }
+
+export type TrendGranularity = 'day' | 'week' | 'month';
+
+function startOfWeek(date: Date): Date {
+  const d = new Date(date);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); // back to Monday
+  return d;
+}
+
+/** Fetch window covering the 7 trend buckets ending in the current period. */
+export function getTrendRange(granularity: TrendGranularity): { from: string; to: string } {
+  const today = new Date();
+  if (granularity === 'day') return getLast7DaysRange();
+  if (granularity === 'week') {
+    const start = startOfWeek(today);
+    start.setDate(start.getDate() - 6 * 7);
+    return { from: toDateStr(start), to: toDateStr(today) };
+  }
+  const start = new Date(today.getFullYear(), today.getMonth() - 6, 1);
+  return { from: toDateStr(start), to: toDateStr(today) };
+}
+
+export interface TrendBucket {
+  key: string;
+  start: Date;
+}
+
+/** The 7 bucket starts (oldest first) for a granularity, ending in the current period. */
+export function trendBuckets(granularity: TrendGranularity): TrendBucket[] {
+  const today = new Date();
+  if (granularity === 'day') {
+    return last7DayKeys().map((key) => ({ key, start: new Date(`${key}T12:00:00`) }));
+  }
+  if (granularity === 'week') {
+    const current = startOfWeek(today);
+    return Array.from({ length: 7 }, (_, i) => {
+      const start = new Date(current);
+      start.setDate(start.getDate() - (6 - i) * 7);
+      return { key: toDateStr(start), start };
+    });
+  }
+  return Array.from({ length: 7 }, (_, i) => {
+    const start = new Date(today.getFullYear(), today.getMonth() - (6 - i), 1);
+    return { key: toDateStr(start).slice(0, 7), start };
+  });
+}
+
+/** Bucket key for a transaction timestamp under a granularity (IST calendar). */
+export function trendBucketKey(isoString: string, granularity: TrendGranularity): string {
+  const dayKey = istDateKey(isoString);
+  if (granularity === 'day') return dayKey;
+  if (granularity === 'month') return dayKey.slice(0, 7);
+  return toDateStr(startOfWeek(new Date(`${dayKey}T12:00:00`)));
+}

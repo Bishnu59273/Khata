@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { getTransactions } from '../api/transactions';
 import { aggregateTransactions } from '../utils/aggregateTransactions';
-import { getPresetRange, getLast7DaysRange, getTodayDateStr } from '../utils/dateRanges';
-import type { ReportRangePreset } from '../utils/dateRanges';
+import { getPresetRange, getTrendRange, getTodayDateStr } from '../utils/dateRanges';
+import type { ReportRangePreset, TrendGranularity } from '../utils/dateRanges';
 import { StatCard } from '../components/dashboard/StatCard';
 import { TransactionsTable } from '../components/transactions/TransactionsTable';
 import { EditTransactionModal } from '../components/transactions/EditTransactionModal';
@@ -33,7 +33,11 @@ export function ReportsPage() {
     queryFn: () => getTransactions(range),
   });
 
-  const trendRange = getLast7DaysRange();
+  // The trend chart's granularity follows the preset: today → last 7 days,
+  // this week → last 7 weeks, this month → last 7 months.
+  const granularity: TrendGranularity =
+    preset === 'week' ? 'week' : preset === 'month' ? 'month' : 'day';
+  const trendRange = getTrendRange(granularity);
   const { data: trendData } = useQuery({
     queryKey: ['transactions', 'range', trendRange.from, trendRange.to],
     queryFn: () => getTransactions(trendRange),
@@ -109,7 +113,7 @@ export function ReportsPage() {
             />
           </div>
 
-          {trendData && <ProfitTrendChart transactions={trendData} />}
+          {trendData && <ProfitTrendChart transactions={trendData} granularity={granularity} />}
 
           <div>
             <h2 className="mb-3 text-base font-bold text-ink-900">{t('detail')}</h2>
