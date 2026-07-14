@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { PaymentModeToggle } from "./PaymentModeToggle";
 import { CustomerPicker, type CustomerSelection } from "../customers/CustomerPicker";
+import { CustomerFormModal } from "../customers/CustomerFormModal";
 import { getAllServices } from "../../api/services";
 import { updateTransaction } from "../../api/transactions";
 import { formatINR } from "../../utils/currency";
@@ -47,6 +48,7 @@ export function EditTransactionModal({
   const [cost, setCost] = useState(String(transaction.cost_paid));
   const [mode, setMode] = useState<PaymentMode>(transaction.payment_mode);
   const [attempted, setAttempted] = useState(false);
+  const [showAddCustomer, setShowAddCustomer] = useState(false);
 
   const saveMutation = useMutation({
     mutationFn: () =>
@@ -79,10 +81,12 @@ export function EditTransactionModal({
   const discountInvalid = discountNum < 0 || discountNum > chargeNum;
   const showLossWarning = !chargeInvalid && !discountInvalid && costNum > chargeNum - discountNum;
   const liveProfit = chargeNum - discountNum - costNum;
+  const udhaarNeedsCustomer = mode === "udhaar" && !customer.customerId;
+  const showUdhaarError = attempted && udhaarNeedsCustomer;
 
   function handleSave() {
     setAttempted(true);
-    if (chargeInvalid || discountInvalid) return;
+    if (chargeInvalid || discountInvalid || udhaarNeedsCustomer) return;
     saveMutation.mutate();
   }
 
@@ -111,16 +115,25 @@ export function EditTransactionModal({
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t("customerName")}
         </label>
-        <div className="mb-4">
-          <CustomerPicker
-            value={customer}
-            onChange={(selection) => {
-              setCustomer(selection);
-              // Udhaar needs a linked customer; fall back to cash when unlinked.
-              if (!selection.customerId && mode === "udhaar") setMode("cash");
-            }}
-          />
+        <div className={showUdhaarError || udhaarNeedsCustomer ? "mb-1.5" : "mb-4"}>
+          <CustomerPicker value={customer} onChange={setCustomer} />
         </div>
+        {showUdhaarError && (
+          <p className="mb-1.5 text-sm font-semibold text-danger-600">
+            {t("udhaarNeedsCustomer", { ns: "customers" })}
+          </p>
+        )}
+        {udhaarNeedsCustomer && customer.name.trim() && (
+          <button
+            type="button"
+            onClick={() => setShowAddCustomer(true)}
+            className="mb-4 flex items-center gap-1.5 text-sm font-bold text-brand-600 hover:underline"
+          >
+            <Plus size={14} />
+            {t("quickCreate", { ns: "customers", name: customer.name.trim() })}
+          </button>
+        )}
+        {udhaarNeedsCustomer && !customer.name.trim() && <div className="mb-2.5" />}
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t("quantity")}
@@ -227,16 +240,7 @@ export function EditTransactionModal({
           {t("paymentModeLabel")}
         </label>
         <div className="mb-5">
-          {/* Udhaar needs a linked customer record; only offer it when one is selected. */}
-          <PaymentModeToggle
-            value={mode}
-            onChange={setMode}
-            modes={
-              customer.customerId
-                ? ["cash", "upi", "udhaar"]
-                : ["cash", "upi"]
-            }
-          />
+          <PaymentModeToggle value={mode} onChange={setMode} />
         </div>
 
         <Button
@@ -249,6 +253,15 @@ export function EditTransactionModal({
         >
           {t("actions.save", { ns: "common" })}
         </Button>
+
+        {showAddCustomer && (
+          <CustomerFormModal
+            customer={null}
+            initialName={customer.name.trim()}
+            onClose={() => setShowAddCustomer(false)}
+            onCreated={(created) => setCustomer({ customerId: created.id, name: created.name })}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );
