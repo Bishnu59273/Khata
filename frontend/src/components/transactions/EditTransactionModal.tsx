@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { PaymentModeToggle } from "./PaymentModeToggle";
+import { CustomerPicker, type CustomerSelection } from "../customers/CustomerPicker";
 import { getAllServices } from "../../api/services";
 import { updateTransaction } from "../../api/transactions";
 import { formatINR } from "../../utils/currency";
@@ -33,7 +34,10 @@ export function EditTransactionModal({
   });
 
   const [serviceId, setServiceId] = useState(transaction.service_id);
-  const [customerName, setCustomerName] = useState(transaction.customer_name ?? '');
+  const [customer, setCustomer] = useState<CustomerSelection>({
+    customerId: transaction.customer_id,
+    name: transaction.customer_name ?? '',
+  });
   const [quantity, setQuantity] = useState(String(transaction.quantity));
   const [charge, setCharge] = useState(String(transaction.customer_charge));
   const [discount, setDiscount] = useState(
@@ -48,7 +52,8 @@ export function EditTransactionModal({
     mutationFn: () =>
       updateTransaction(transaction.id, {
         service_id: serviceId,
-        customer_name: customerName.trim() || undefined,
+        customer_id: customer.customerId,
+        customer_name: customer.name.trim() || undefined,
         customer_charge: Number(charge || 0),
         discount: Number(discount || 0),
         cost_paid: Number(cost || 0),
@@ -106,13 +111,16 @@ export function EditTransactionModal({
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t("customerName")}
         </label>
-        <input
-          type="text"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-          placeholder={t("customerNamePlaceholder")}
-          className="mb-4 w-full rounded-xl border border-border-soft bg-white px-3.5 py-3 text-base font-medium text-ink-900 outline-none"
-        />
+        <div className="mb-4">
+          <CustomerPicker
+            value={customer}
+            onChange={(selection) => {
+              setCustomer(selection);
+              // Udhaar needs a linked customer; fall back to cash when unlinked.
+              if (!selection.customerId && mode === "udhaar") setMode("cash");
+            }}
+          />
+        </div>
 
         <label className="mb-1.5 block text-sm font-semibold text-ink-700">
           {t("quantity")}
@@ -219,12 +227,12 @@ export function EditTransactionModal({
           {t("paymentModeLabel")}
         </label>
         <div className="mb-5">
-          {/* Udhaar needs a linked customer record; only offer it when one exists. */}
+          {/* Udhaar needs a linked customer record; only offer it when one is selected. */}
           <PaymentModeToggle
             value={mode}
             onChange={setMode}
             modes={
-              transaction.customer_id
+              customer.customerId
                 ? ["cash", "upi", "udhaar"]
                 : ["cash", "upi"]
             }
